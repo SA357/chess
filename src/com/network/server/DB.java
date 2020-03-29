@@ -1,4 +1,4 @@
-package network.server;
+package com.network.server;
 
 import java.io.FileOutputStream;
 import java.io.IOException;

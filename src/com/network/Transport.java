@@ -1,7 +1,7 @@
-package network;
+package com.network;
 
-import network.message.Message.*;
-import network.message.Message;
+import com.network.message.Message.*;
+import com.network.message.Message;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

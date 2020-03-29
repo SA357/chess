@@ -1,4 +1,4 @@
-package network.message;
+package com.network.message;
 
 public class MessageNames {
 

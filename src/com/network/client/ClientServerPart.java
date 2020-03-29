@@ -1,7 +1,8 @@
-package network.client;
+package com.network.client;
 
 import network.Transport;
-import network.message.*;
+import com.network.message.*;
+import com.network.message.Message.*;
 
 import java.io.BufferedInputStream;
 import java.io.ObjectInputStream;
@@ -12,7 +13,7 @@ import java.net.SocketTimeoutException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static network.message.MessageNames.*;
+import static com.network.message.MessageNames.*;
 
 
 public class ClientServerPart implements Runnable {

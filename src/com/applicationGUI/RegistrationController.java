@@ -1,13 +1,13 @@
-package applicationGUI;
+package com.applicationGUI;
 
+import com.network.message.Message;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import network.Transport;
-import network.client.Account;
-import network.message.Message.*;
+
 
 
 public class RegistrationController {
@@ -31,7 +31,7 @@ public class RegistrationController {
        String name=nameField.getText();
         new Thread( () -> {
             try {
-                GreetingReplyMessage check = (GreetingReplyMessage) transport.sendAndRecieve_NOT_CRYPTED(
+                Message.GreetingReplyMessage check = (Message.GreetingReplyMessage) transport.sendAndRecieve_NOT_CRYPTED(
                         new GreetingMessage(name, Account.getClientServerPartPort(), password), ClientApp.getServerAddress());
                 if (check.isVerified()) {
                      Account.setName(name);

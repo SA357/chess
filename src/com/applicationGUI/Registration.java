@@ -1,4 +1,4 @@
-package applicationGUI;
+package com.applicationGUI;;
 
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;

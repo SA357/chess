@@ -1,7 +1,5 @@
-package applicationGUI;
+package com.applicationGUI;
 
-import KR.Transport;
-import KR.message.Message.*;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -12,6 +10,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetSocketAddress;
+
+;
 
 public class GUI {
 
@@ -32,7 +32,7 @@ public class GUI {
         stage.getIcons().add(image);
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("GUIScene.fxml"));
         TabPane root = loader.load();
-        GUIController.setInstance(loader.getController());
+        applicationGUI.GUIController.setInstance(loader.getController());
         Scene scene = new Scene(root, 800, 550);
         stage.setOnCloseRequest(event-> {
             try {

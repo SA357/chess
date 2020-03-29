@@ -1,4 +1,4 @@
-package network.message;
+package com.network.message;
 
 import javax.crypto.*;
 import java.io.*;
@@ -15,7 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static network.message.MessageNames.*;
+import static com.network.message.MessageNames.*;
 
 
 public abstract class Message implements Serializable {
@@ -102,7 +102,7 @@ public abstract class Message implements Serializable {
 
     public static class EchoMessage extends Message {//1
 
-        EchoMessage() {
+        public EchoMessage() {
             super(echoMessageCode, "ECHO");
         }
     }
