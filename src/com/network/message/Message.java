@@ -51,7 +51,7 @@ public abstract class Message implements Serializable {
             KeyGenerator gen = KeyGenerator.getInstance("AES");
             gen.init(new SecureRandom(password.getBytes(StandardCharsets.UTF_8)));
             Key key = gen.generateKey();
-            Cipher encCipher = Cipher.getInstance("AES");//TripleDES //посмотреть в ентернете
+            Cipher encCipher = Cipher.getInstance("AES");
             encCipher.init(Cipher.ENCRYPT_MODE, key);
             ByteArrayOutputStream baos;
             try (ObjectOutputStream oos = new ObjectOutputStream(
@@ -60,7 +60,7 @@ public abstract class Message implements Serializable {
                             encCipher))) {
                 oos.writeObject(msg);
             }
-            ciphered.cipheredBytes = baos.toByteArray();////////////////////////////////////////////АаааааААААаааААААааFFFFFFFFFFawffwaafwfwwafff
+            ciphered.cipheredBytes = baos.toByteArray();
             return ciphered;
         }
 
@@ -112,7 +112,7 @@ public abstract class Message implements Serializable {
         private final boolean isAdmin;
         private final boolean isVerified;
 
-        GreetingReplyMessage(boolean isAdmin, boolean isVerified) {
+        public GreetingReplyMessage(boolean isAdmin, boolean isVerified) {
             super(greetingReplyMessageCode, "SERVER");
             this.isAdmin = isAdmin;
             this.isVerified = isVerified;
@@ -145,7 +145,7 @@ public abstract class Message implements Serializable {
 
         private final boolean isRegestrated;
 
-        RegistrationReplyMessage(boolean isRegestrated) {
+        public RegistrationReplyMessage(boolean isRegestrated) {
             super(registrationReplyMessageCode, "SERVER");
             this.isRegestrated = isRegestrated;
         }
@@ -161,7 +161,7 @@ public abstract class Message implements Serializable {
         private final String password;
         private final InetSocketAddress inetSocketAddress;
 
-        SettingMessage(String name, String newName, String password, InetSocketAddress inetSocketAddress) {
+        public SettingMessage(String name, String newName, String password, InetSocketAddress inetSocketAddress) {
             super(settingMessageCode, name);
             this.newName = newName;
             this.password = password;
@@ -183,14 +183,14 @@ public abstract class Message implements Serializable {
 
     public static class AddedClientMessage extends Message {//7
 
-        AddedClientMessage(String name) {
+        public AddedClientMessage(String name) {
             super(addedClientMessageCode, name);
         }
     }
 
     public static class DeleteClientMessage extends Message {//8
 
-        DeleteClientMessage(String name) {
+        public DeleteClientMessage(String name) {
             super(deleteClientMessageCode, name);
         }
     }
@@ -199,7 +199,7 @@ public abstract class Message implements Serializable {
 
         private final InetSocketAddress inetSocketAddress;
 
-        DeleteMeMessage(InetSocketAddress inetSocketAddress, String name) {
+        public DeleteMeMessage(InetSocketAddress inetSocketAddress, String name) {
             super(deleteMeMessageCode, name);
             this.inetSocketAddress = inetSocketAddress;
         }
@@ -214,7 +214,7 @@ public abstract class Message implements Serializable {
 
         private final InetSocketAddress inetSocketAddress;
 
-        NewServerAddressMessage(InetSocketAddress inetSocketAddress) {
+        public NewServerAddressMessage(InetSocketAddress inetSocketAddress) {
             super(newServerAddressMessageCode, "SERVER");
             this.inetSocketAddress = inetSocketAddress;
         }
@@ -228,7 +228,7 @@ public abstract class Message implements Serializable {
 
         private final boolean isChanged;
 
-        SettingReplyMessage(boolean isChanged) {
+        public SettingReplyMessage(boolean isChanged) {
             super(settingReplyMessageCode, "SERVER");
             this.isChanged = isChanged;
         }
@@ -276,7 +276,7 @@ public abstract class Message implements Serializable {
             return list;
         }
 
-        static class Entry implements Serializable {
+        public static class Entry implements Serializable {
 
             private static final long serialVersionUID = 444;
             private final String date;
@@ -329,7 +329,7 @@ public abstract class Message implements Serializable {
             return set;
         }
 
-        static class Zakaz implements Serializable {
+        public static class Zakaz implements Serializable {
 
             public static final long serialVersionUID = 321;
             private final String date;
@@ -397,7 +397,7 @@ public abstract class Message implements Serializable {
 
         private final String text;
 
-        TextMessage(String text, String name) {
+        public TextMessage(String text, String name) {
             super(textMessageCode, name);
             this.text = text;
         }

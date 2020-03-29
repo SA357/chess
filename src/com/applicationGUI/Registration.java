@@ -1,15 +1,16 @@
-package com.applicationGUI;;
+package com.applicationGUI;
 
+import com.network.client.ClientServerPart;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import network.client.ClientServerPart;
 
 import java.io.IOException;
 import java.io.InputStream;
+
 
 public class Registration {
 

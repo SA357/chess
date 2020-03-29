@@ -2,8 +2,8 @@ package com.applicationGUI;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import network.client.Account;
-import network.client.ClientServerPart;
+import com.network.client.Account;
+import com.network.client.ClientServerPart;
 
 import java.net.InetSocketAddress;
 import java.util.Random;

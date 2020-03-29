@@ -11,6 +11,8 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.*;
 
+import static com.network.message.Message.*;
+
 @SuppressWarnings("UnusedAssignment")
 class DB {
 
@@ -356,49 +358,6 @@ class DB {
 //                stmt.setDate(1, msg.getDate());
 //                stmt.execute();
         }
-    }
-
-    public KastomQueryReplyMessage executeKastomQuery() throws SQLException, IOException {
-        KastomQueryReplyMessage replyMessage = new KastomQueryReplyMessage();
-        try (Connection conn = getConnection()) {
-            Statement stmt = conn.createStatement();
-            //наполняем Map <Название оружия, фото оружия>
-            ResultSet rs1 = stmt.executeQuery("SELECT Name_of_the_weapon FROM List_of_weapons_types");///если List_of_weapons, то будет выдавать только которые есть на складе
-            while (rs1.next()) {
-                replyMessage.getWeaponsMap().put(rs1.getString(1), Photo.create("exFiles\\weapons\\" + rs1.getString(1) + ".png"));
-            }
-            rs1.close();
-            //наполняем Map<Название оружия, Set <Название прицела>> и  Map<String, Photo> scopeImage
-            ResultSet rs2 = stmt.executeQuery("SELECT Name_of_the_weapon,Name_of_the_scope FROM Compliance_of_the_weapons_and_scopes");
-            while (rs2.next()) {
-                replyMessage.getScopeMap().putIfAbsent(rs2.getString(1), new HashSet<>());
-                replyMessage.getScopeMap().computeIfPresent(rs2.getString(1), (k, v) -> {
-                    try {
-                        v.add(rs2.getString(2));
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                    return v;
-                });
-                replyMessage.getScopeImage().putIfAbsent(rs2.getString(2), Photo.create("exFiles\\scopes\\" + rs2.getString(2) + ".png"));
-            }
-            rs2.close();
-            //наполняем Map<Название оружия, Set <Название подствольника>>  и  Map<String, Photo> podstvolnikImage
-            ResultSet rs3 = stmt.executeQuery("SELECT Name_of_the_weapon, Name_of_the_grenade_launcher FROM Weapons_and_grenade_launcher_compliance");
-            while (rs3.next()) {
-                replyMessage.getPodstvolnikMap().putIfAbsent(rs3.getString(1), new HashSet<>());
-                replyMessage.getPodstvolnikMap().computeIfPresent(rs3.getString(1), (k, v) -> {
-                    try {
-                        v.add(rs3.getString(2));
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                    return v;
-                });
-                replyMessage.getPodstvolnikImage().putIfAbsent(rs2.getString(2), Photo.create("exFiles\\podstvolniks\\" + rs2.getString(2) + ".png"));
-            }
-        }
-        return replyMessage;
     }
 
     boolean isAdmin(String name, String password) throws SQLException {

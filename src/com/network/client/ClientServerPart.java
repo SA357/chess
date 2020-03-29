@@ -1,7 +1,9 @@
 package com.network.client;
 
-import network.Transport;
-import com.network.message.*;
+import com.applicationGUI.ClientApp;
+import com.applicationGUI.GUIController;
+import com.network.Transport;
+import com.network.message.Message;
 import com.network.message.Message.*;
 
 import java.io.BufferedInputStream;
@@ -30,7 +32,7 @@ public class ClientServerPart implements Runnable {
         quit = true;
     }
 
-    static void reload() {
+    public static void reload() {
         quit = false;
     }
 

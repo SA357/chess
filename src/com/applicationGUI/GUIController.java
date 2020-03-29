@@ -1,7 +1,8 @@
-package applicationGUI;
+package com.applicationGUI;
 
-import KR.*;
-import KR.message.Message.*;
+import com.network.Transport;
+import com.network.client.Account;
+import com.network.client.ClientServerPart;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -16,7 +17,8 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Arrays;
 
-import static KR.Music.*;
+import static com.applicationGUI.Music.*;
+import static com.network.message.Message.*;
 
 class ZakazTableItem {
     @FXML private SimpleStringProperty weapon;
@@ -83,39 +85,9 @@ public class GUIController {
 
     private static GUIController instance;
     private static Transport transport = new Transport();
-    static private KastomQueryReplyMessage kastomQueryReplyMessage;
     static private MediaPlayer mediaPlayer;
 
     @FXML private void initialize() {
-        weaponChoiceBox.setOnAction(event -> {
-            scopeChoiceBox.getSelectionModel().clearSelection();
-            podstvolnikChoiceBox.getSelectionModel().clearSelection();
-            String weaponName = weaponChoiceBox.getValue();
-            weaponImage.setImage(kastomQueryReplyMessage.getWeaponsMap().get(weaponName).toImage());
-            ObservableList<String> list1 = FXCollections.observableArrayList("");
-            if (kastomQueryReplyMessage.getScopeMap().get(weaponName) != null)
-                list1.addAll(kastomQueryReplyMessage.getScopeMap().get(weaponName));
-            scopeChoiceBox.setItems(list1);
-
-            ObservableList<String> list2 = FXCollections.observableArrayList("");
-            if (kastomQueryReplyMessage.getPodstvolnikMap().get(weaponName) != null)
-                list2.addAll(kastomQueryReplyMessage.getPodstvolnikMap().get(weaponName));
-            podstvolnikChoiceBox.setItems(list2);
-        });
-
-        scopeChoiceBox.setOnAction(event -> {
-            if (!"".equals(scopeChoiceBox.getValue()) && kastomQueryReplyMessage.getScopeImage().get(scopeChoiceBox.getValue()) != null) { //в чём отличие от equals null
-                scopeImage.setVisible(true);
-                scopeImage.setImage(kastomQueryReplyMessage.getScopeImage().get(scopeChoiceBox.getValue()).toImage());
-            } else scopeImage.setVisible(false);
-        });
-
-        podstvolnikChoiceBox.setOnAction(event -> {
-            if (!"".equals(podstvolnikChoiceBox.getValue()) && kastomQueryReplyMessage.getPodstvolnikImage().get(podstvolnikChoiceBox.getValue()) != null) {
-                podstvolnikImage.setVisible(true);
-                podstvolnikImage.setImage(kastomQueryReplyMessage.getPodstvolnikImage().get(podstvolnikChoiceBox.getValue()).toImage());
-            } else podstvolnikImage.setVisible(false);
-        });
 
         columnDate.setCellValueFactory(x -> x.getValue().dataProperty());
         columnAuthor.setCellValueFactory(x -> x.getValue().userNameProperty());
@@ -162,34 +134,15 @@ public class GUIController {
     }
 
     @FXML private void newZakaz() throws Exception {
-        transport.sendMessage_CRYPTED(
-                new NewZakazQueryMessage(Account.getName(), weaponChoiceBox.getValue(), scopeChoiceBox.getValue(), podstvolnikChoiceBox.getValue())
-                , ClientApp.getServerAddress(), Account.getPassword()
-        );
-        reloadZakazi();
+
     }
 
     @FXML private void reloadZakazi() throws Exception {
-        UserZakaziQueryReplyMessage response =
-                (UserZakaziQueryReplyMessage) transport.sendAndRecieve_CRYPTED(new UserZakaziQueryMessage(Account.getName()),
-                        Account.getPassword(), ClientApp.getServerAddress());
-        Platform.runLater(() -> {
-            ObservableList<ZakazTableItem> list = FXCollections.observableArrayList();
-            for (UserZakaziQueryReplyMessage.Zakaz zakaz : response.getSet()) {
-                list.add(new ZakazTableItem(zakaz.getWeapon(), zakaz.getDate(), zakaz.getScope(), zakaz.getPodstvolnik()));
-                zakaziTable.setItems(list);
-            }
-        });
+
     }
 
     @FXML private void reloadKastom() {
-        try {
-            kastomQueryReplyMessage = (KastomQueryReplyMessage) transport.sendAndRecieve_CRYPTED(
-                    new KastomQueryMessage(Account.getName()), Account.getPassword(), ClientApp.getServerAddress());
-            weaponChoiceBox.setItems(FXCollections.observableArrayList(kastomQueryReplyMessage.getWeaponsMap().keySet()));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
     }
 
     public void setAdmin() {
@@ -295,15 +248,15 @@ public class GUIController {
         }
     }
 
-    void showMessage(String line) {
+    public void showMessage(String line) {
         Platform.runLater(() -> textArea.appendText(line + "\n"));
     }
 
-    void addActiveClient(String name) {
+    public void addActiveClient(String name) {
         Platform.runLater(() -> activeUsers.appendText(name + "\n"));
     }
 
-    void deleteActiveClient(String name) {
+    public void deleteActiveClient(String name) {
         String line = activeUsers.getText();
         Platform.runLater(() -> {
             activeUsers.setText("");
