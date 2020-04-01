@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<TabPane fx:id="tabPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.applicationGUI.GUIController">
+  <tabs>
+      <Tab closable="false" text="Кастомизатор">
+         <content>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <ImageView fx:id="podstvolnikImage" fitHeight="74.0" fitWidth="216.0" layoutX="280.0" layoutY="256.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="243.0" AnchorPane.leftAnchor="280.0" AnchorPane.rightAnchor="404.0" />
+                  <Button alignment="BOTTOM_CENTER" contentDisplay="CENTER" layoutX="345.0" layoutY="518.0" mnemonicParsing="false" onAction="#newZakaz" text="Сохранить конфигурацию" AnchorPane.bottomAnchor="28.0" />
+                  <ChoiceBox fx:id="podstvolnikChoiceBox" layoutX="14.0" layoutY="396.0" prefHeight="22.0" prefWidth="101.0" />
+                  <ChoiceBox fx:id="weaponChoiceBox" layoutX="388.0" layoutY="24.0" prefHeight="12.0" prefWidth="125.0" AnchorPane.rightAnchor="387.0" />
+                  <ChoiceBox fx:id="scopeChoiceBox" layoutX="699.0" layoutY="114.0" prefHeight="21.0" prefWidth="94.0" AnchorPane.rightAnchor="107.0" />
+                  <ImageView fx:id="weaponImage" fitHeight="274.0" fitWidth="679.0" layoutX="174.0" layoutY="208.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="139.98117065429688" AnchorPane.leftAnchor="174.0" AnchorPane.rightAnchor="47.0" />
+                  <ImageView fx:id="scopeImage" fitHeight="60.0" fitWidth="166.0" layoutX="489.0" layoutY="180.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="335.6666679382324" AnchorPane.leftAnchor="489.0" AnchorPane.rightAnchor="245.0" />
+               </children>
+            </AnchorPane>
+         </content>
+      </Tab>
+    <Tab closable="false" text="Чатэк">
+         <content>
+            <BorderPane prefHeight="200.0" prefWidth="200.0">
+               <center>
+                  <TextArea fx:id="textArea" editable="false" prefHeight="200.0" prefWidth="200.0" promptText="отправленные сообщения" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </TextArea>
+               </center>
+               <bottom>
+                  <TextField fx:id="textField" alignment="TOP_LEFT" onAction="#sendMessage" prefHeight="35.0" prefWidth="595.0" promptText="Отправить сообщение" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </TextField>
+               </bottom>
+               <right>
+                  <TextArea fx:id="activeUsers" editable="false" prefHeight="346.0" prefWidth="134.0" promptText="пользователи онлайн" BorderPane.alignment="CENTER" />
+               </right>
+            </BorderPane>
+         </content>
+    </Tab>
+      <Tab fx:id="zakazi" closable="false" onSelectionChanged="#reloadZakazi" text="Мои заказы">
+         <content>
+            <BorderPane prefHeight="200.0" prefWidth="200.0">
+               <top>
+                  <VBox alignment="TOP_CENTER" BorderPane.alignment="CENTER">
+                     <children>
+                        <Button alignment="CENTER" contentDisplay="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#reload" text="обновить" textAlignment="CENTER" />
+                     </children>
+                  </VBox>
+               </top>
+               <center>
+                  <TableView fx:id="zakaziTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                    <columns>
+                      <TableColumn fx:id="zakazDataColumn" prefWidth="209.0" text="дата" />
+                      <TableColumn fx:id="zakazWeaponColumn" prefWidth="330.0" text="оружие" />
+                        <TableColumn fx:id="zakazScopeColumn" prefWidth="185.0" text="прицел" />
+                        <TableColumn fx:id="zakazPodstvolnikColumn" prefWidth="173.0" text="подствольный гранатомёт" />
+                    </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                  </TableView>
+               </center>
+            </BorderPane>
+         </content>
+      </Tab>
+      <Tab fx:id="settings" closable="false" text="НАСТРОЙКИ">
+         <content>
+            <TabPane>
+               <tabs>
+                  <Tab closable="false" text="Изменение стиля">
+                     <content>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="3.0">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#mute" style="-fx-background-color: RED;" text="mute" textFill="WHITE" />
+                              <VBox alignment="CENTER" prefHeight="424.0" prefWidth="120.0" spacing="3.0">
+                                 <children>
+                                    <ImageView fitHeight="152.0" fitWidth="218.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@GLAA.jpg" />
+                                       </image></ImageView>
+                                    <TextField alignment="CENTER" editable="false" text="Shaballa" />
+                                    <Button mnemonicParsing="false" onAction="#AL_SHAB_Style" text="выбрать" />
+                                 </children></VBox>
+                              <VBox alignment="CENTER" prefHeight="424.0" prefWidth="120.0" spacing="3.0">
+                                 <children>
+                                    <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@icon.jpg" />
+                                       </image></ImageView>
+                                    <TextField alignment="CENTER" editable="false" text="СТАНДАРТНЫЙ" />
+                                    <Button mnemonicParsing="false" onAction="#standart_Style" text="выбрать" />
+                                 </children></VBox>
+                              <VBox alignment="CENTER" prefHeight="424.0" prefWidth="120.0" spacing="3.0">
+                                 <children>
+                                    <ImageView fitHeight="153.0" fitWidth="243.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@Novorossia.jpg" />
+                                       </image></ImageView>
+                                    <TextField alignment="CENTER" text="DNR" />
+                                    <Button mnemonicParsing="false" onAction="#DNR_Style" text="выбрать" />
+                                 </children></VBox>
+                           </children>
+                        </HBox>
+                     </content>
+                  </Tab>
+                  <Tab closable="false" text="Настройки аккаунта">
+                     <content>
+                        <BorderPane>
+                           <center>
+                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="3.0">
+                                 <children>
+                                    <TextField fx:id="newName" alignment="CENTER" maxWidth="-Infinity" onAction="#changeSettings" prefHeight="22.0" prefWidth="194.0" promptText="ВВЕДИТЕ НОВОЕ ИМЯ">
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                    </TextField>
+                                    <TextField fx:id="newPassword" alignment="CENTER" maxWidth="-Infinity" onAction="#changeSettings" prefHeight="25.0" prefWidth="194.0" promptText="ВВЕДИТЕ НОВЫЙ ПАРОЛЬ" />
+                                    <TextField fx:id="newPort" alignment="CENTER" maxWidth="-Infinity" onAction="#changeSettings" promptText="ВВЕДИТЕ НОВЫЙ ПОРТ" />
+                                    <Button fx:id="changeSettings" mnemonicParsing="false" onAction="#changeSettings" text="OK" />
+                                 </children>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                              </VBox>
+                           </center>
+                        </BorderPane>
+                     </content>
+                  </Tab>
+               </tabs>
+            </TabPane>
+         </content>
+      </Tab>
+    <Tab fx:id="adminTab" closable="false" text="Секретное окно адмена">
+         <content>
+            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="100.0" spacing="3.0">
+               <children>
+                  <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                     <children>
+                        <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="70.0" prefWidth="600.0" spacing="20.0">
+                           <children>
+                              <DatePicker fx:id="datePicker" />
+                              <TextField fx:id="userName" alignment="CENTER" promptText="имя пользователя" />
+                              <TextField fx:id="words" alignment="CENTER" promptText="определённые слова" />
+                           </children>
+                        </HBox>
+                        <Button fx:id="adminQuery" alignment="CENTER" mnemonicParsing="false" onAction="#adminQuery" text="ПОИСК" />
+                     </children>
+                  </VBox>
+                  <TableView fx:id="queryTable" editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="473.0" prefWidth="900.0">
+                    <columns>
+                      <TableColumn fx:id="columnDate" prefWidth="106.0" text="дата" />
+                      <TableColumn fx:id="columnAuthor" prefWidth="105.0" text="автор" />
+                        <TableColumn fx:id="columnMsg" prefWidth="388.0" text="сообщение" />
+                    </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                  </TableView>
+               </children>
+            </VBox>
+         </content></Tab>
+  </tabs>
+</TabPane>

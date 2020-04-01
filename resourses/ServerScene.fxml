@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.network.server.ServerController">
+   <children>
+      <TextArea fx:id="console" editable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="401.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <TextArea fx:id="echo" editable="false" layoutX="401.0" prefHeight="600.0" prefWidth="278.0" scaleShape="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="401.0" AnchorPane.topAnchor="0.0" />
+      <TextField fx:id="newServerAddress" layoutX="683.0" layoutY="195.0" prefHeight="45.0" prefWidth="203.0" promptText="Введите новый адресс для сервера" text="localhost" AnchorPane.leftAnchor="683.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="195.0" />
+      <TextField fx:id="newServerPort" layoutX="683.0" layoutY="240.0" prefHeight="42.0" prefWidth="203.0" promptText="Введите новый порт для сервера" AnchorPane.leftAnchor="683.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="240.0" />
+      <Button fx:id="b1" layoutX="768.0" layoutY="282.0" mnemonicParsing="false" onAction="#newServerAddress" text="OK" AnchorPane.leftAnchor="768.0" AnchorPane.topAnchor="282.0" />
+   </children>
+</AnchorPane>

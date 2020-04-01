@@ -9,14 +9,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetSocketAddress;
-
 import static com.network.message.Message.DeleteMeMessage;
-
-;
 
 public class GUI {
 
@@ -31,7 +27,7 @@ public class GUI {
         stage.setTitle("PRO_LABS");     // установка заголовка
         stage.setWidth(900);            // установка ширины
         stage.setHeight(700);           // установка длины
-        InputStream iconStream = getClass().getClassLoader().getResourceAsStream("icon.jpg");
+        InputStream iconStream = getClass().getClassLoader().getResourceAsStream("icon.png");
         assert iconStream != null;
         Image image = new Image(iconStream);
         stage.getIcons().add(image);

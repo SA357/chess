@@ -22,10 +22,10 @@ public class Registration {
 
     public void init() throws IOException {
         stage = new Stage();
-        stage.setTitle("ВХОД");  // установка заголовка
-        stage.setWidth(850);            // установка ширины
-        stage.setHeight(650);           // установка длины
-        InputStream iconStream = getClass().getClassLoader().getResourceAsStream("icon.jpg");
+        stage.setTitle("ВХОД");
+        stage.setWidth(850);
+        stage.setHeight(650);
+        InputStream iconStream = getClass().getClassLoader().getResourceAsStream("icon.png");
         assert iconStream != null;
         Image image = new Image(iconStream);
         stage.getIcons().add(image);
