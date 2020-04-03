@@ -27,47 +27,9 @@ class DB {
             Statement stmt = conn.createStatement();
             stmt.executeUpdate("create table Clients ( name text, password text, date timestamp, isAdmin boolean )");
             stmt.executeUpdate("create table ActiveClients ( name text, IP text, portServerPart int, date timestamp )");
+            stmt.executeUpdate("create table ActiveSessions ( id SERIAL, player1 text, player2 text, date timestamp )");
             stmt.executeUpdate("create table LOG ( name text, date timestamp, text text )");
-            stmt.executeUpdate("create table Zakazi ( name text, date timestamp, weapon text, scope text, podstvolnik text, serial SERIAL )");//
-
-            executeLinesFromFile();
-
-            addWeaponType("ak12", "5,45", "автомат");
-            addWeaponType("ak103", "5,56", "автомат");
-            addWeaponType("akm", "7,62", "автомат");
-            addWeaponType("g36", "5,56", "автомат");
-            addWeaponType("m4a1", "5,56", "автомат");
-            addWeaponType("scarh", "7,62", "автомат");
-            addWeapon("ak12", "2014");
-            addWeapon("ak103", "2009");
-            addWeapon("akm", "1960");
-            addWeapon("g36", "2005");
-            addWeapon("m4a1", "1995");
-            addWeapon("scarh", "1996");
-
-            addScopeType("acog");
-            addScopeType("eotech");
-            addScopeType("kobra");
-            addScope("acog", "2015");
-            addScope("eotech", "2016");
-            addScope("kobra", "2017");
-
-            addGrenadeLauncherCaliber("gp25", "40");
-            addGrenadeLauncherCaliber("m203", "40");
-            addGrenadeLauncher("gp25", "1988");
-            addGrenadeLauncher("m203", "1977");
-
-            List<String> uniScopesWeapons = Arrays.asList("ak12", "ak103", "g36", "m4a1", "scarh");//"akm,"
-            List<String> rusUniGrenadWeapons = Arrays.asList("ak12", "ak103");
-            List<String> scopes = Arrays.asList("acog", "eotech", "kobra");
-            for (String gun : uniScopesWeapons) {
-                for (String sc : scopes)
-                    addCompliance_of_the_weapons_and_scopes(gun, sc);
-            }
-            for (String gun : rusUniGrenadWeapons) {
-                addWeapons_and_grenade_launcher_compliance(gun, "gp25");
-            }
-            addWeapons_and_grenade_launcher_compliance("m4a1", "m203");
+            stmt.executeUpdate("create table Zakazi ( name text, date timestamp, weapon text, scope text, podstvolnik text, id SERIAL )");
 
             addClient("ADMIN", "111", Date.valueOf(LocalDate.now()), true);
             addClient("Лариса Ивановна", "111", Date.valueOf(LocalDate.now()), false);
@@ -75,24 +37,6 @@ class DB {
             addClient("Бумбершнюк", "111", Date.valueOf(LocalDate.now()), false);
             addClient("Бусыгин Константин Николаевич", "111", Date.valueOf(LocalDate.now()), true);
             addClient("q", "q", Date.valueOf(LocalDate.now()), false);
-        }
-    }
-
-    public void addCompliance_of_the_weapons_and_scopes(String weapon, String scope) throws SQLException {
-        try (Connection conn = getConnection()) {
-            PreparedStatement stmt = conn.prepareStatement("insert into Compliance_of_the_weapons_and_scopes values(?, ?, null)");
-            stmt.setString(1, weapon);
-            stmt.setString(2, scope);
-            stmt.execute();
-        }
-    }
-
-    public void addWeapons_and_grenade_launcher_compliance(String weapon, String grenade_launcher) throws SQLException {
-        try (Connection conn = getConnection()) {
-            PreparedStatement stmt = conn.prepareStatement("insert into Weapons_and_grenade_launcher_compliance values(?, ?, null)");///&&&
-            stmt.setString(1, weapon);
-            stmt.setString(2, grenade_launcher);
-            stmt.execute();
         }
     }
 
@@ -111,63 +55,6 @@ class DB {
 //            stmt2.execute();
             ServerController.getInstance().log("изменил имя на >>>" + msg.getNewName());
             addLog(msg.getName(), Date.valueOf(LocalDate.now()), "изменил имя на >>>" + msg.getNewName());
-        }
-    }
-
-    public void addWeapon(String name, String date) throws SQLException {
-        try (Connection conn = getConnection()) {
-            PreparedStatement stmt = conn.prepareStatement("insert into List_of_weapons values(?, ?, ?)");
-            stmt.setString(1, name);
-            stmt.setString(2, date);
-            stmt.setString(3, String.valueOf(new Random().nextInt()));
-            stmt.execute();
-        }
-    }
-
-    public void addWeaponType(String name, String caliber, String type) throws SQLException {
-        try (Connection conn = getConnection()) {
-            PreparedStatement stmt = conn.prepareStatement("insert into List_of_weapons_types values(?, ?, ?)");
-            stmt.setString(1, name);
-            stmt.setString(2, caliber);
-            stmt.setString(3, type);
-            stmt.execute();
-        }
-    }
-
-    public void addScopeType(String name) throws SQLException {
-        try (Connection conn = getConnection()) {
-            PreparedStatement stmt = conn.prepareStatement("insert into List_of_types_of_scopes values(?)");
-            stmt.setString(1, name);
-            stmt.execute();
-        }
-    }
-
-    public void addScope(String name, String date) throws SQLException {
-        try (Connection conn = getConnection()) {
-            PreparedStatement stmt = conn.prepareStatement("insert into List_of_scopes values(?, ?, ?)");
-            stmt.setString(1, name);
-            stmt.setString(2, date);
-            stmt.setString(3, String.valueOf(new Random().nextInt()));
-            stmt.execute();
-        }
-    }
-
-    public void addGrenadeLauncherCaliber(String name, String caliber) throws SQLException {
-        try (Connection conn = getConnection()) {
-            PreparedStatement stmt = conn.prepareStatement("insert into List_of_calibers_of_grenade_launchers values(?, ?)");
-            stmt.setString(1, name);
-            stmt.setString(2, caliber);
-            stmt.execute();
-        }
-    }
-
-    public void addGrenadeLauncher(String name, String date) throws SQLException {
-        try (Connection conn = getConnection()) {
-            PreparedStatement stmt = conn.prepareStatement("insert into List_of_copies_of_grenade_launchers values(?, ?, ?)");
-            stmt.setString(1, name);
-            stmt.setString(2, date);
-            stmt.setString(3, String.valueOf(new Random().nextInt()));
-            stmt.execute();
         }
     }
 
@@ -193,6 +80,40 @@ class DB {
         }
     }
 
+    public void addActiveSession(String player1, String player2, Date date) throws SQLException {
+        try (Connection conn = getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement("insert into activeClients(player1, player2, date) values (?, ?, ?)");
+            stmt.setString(1, player1);
+            stmt.setString(2, player2);
+            stmt.setDate(3, date);
+            stmt.execute();
+        }
+    }
+    //TODO
+    public void closeActiveSession(String player, String player2, Date date) throws SQLException {
+
+    }
+
+
+
+    void closeAllActiveSession() throws SQLException {
+        for (InetSocketAddress a : getAllActiveSessions()) {
+            closeActiveSession(a);
+        }
+    }
+
+    List<> getAllActiveSessions() throws SQLException {
+        List<InetSocketAddress> list = new ArrayList<>();
+        try (Connection conn = getConnection()) {dwa
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT IP, portServerPart from activeClients");
+            while (rs.next()) {
+                list.add(new InetSocketAddress(rs.getString(1), rs.getInt(2)));
+            }
+        }
+        return list;
+    }
+
     public void addLog(String name, Date date, String text) throws SQLException {
         try (Connection conn = getConnection()) {
             PreparedStatement stmt = conn.prepareStatement("insert into LOG values(?, ?, ?)");
@@ -201,112 +122,6 @@ class DB {
             stmt.setString(3, text);
             stmt.execute();
         }
-    }
-
-    public void newZakaz(NewZakazQueryMessage msg) throws SQLException {
-        System.out.println("обрабатывается заказ " + msg.getName());
-        ServerController.getInstance().log("обрабатывается заказ " + msg.getName());
-        Connection conn = getConnection();
-        try {
-            conn.setAutoCommit(false);
-            //
-            PreparedStatement weaponStmt = conn.prepareStatement("select Serial_number from List_of_weapons  where Name_of_the_weapon = ? limit 1");
-            weaponStmt.setString(1, msg.getWeapon());
-            ResultSet weaponRS = weaponStmt.executeQuery();
-
-            try {
-                weaponRS.getString(1);//если ничюво нету выдаст ошибку
-            } catch (SQLException e) {
-                System.out.println(msg.getWeapon() + " хотят заказать, а он отсутствует на складе");
-                ServerController.getInstance().log(msg.getWeapon() + " хотят заказать, а он отсутствует на складе");
-                throw e;
-            }
-
-            PreparedStatement weaponDelStmt = conn.prepareStatement("delete from List_of_weapons where Serial_number = ? ");
-            weaponDelStmt.setString(1, weaponRS.getString(1));
-            if (weaponDelStmt.executeUpdate() == 0) {
-                conn.rollback();
-                newZakaz(msg);
-                throw new SQLException("кто-то забрал " + msg.getWeapon());
-            }
-            //
-            if (!"".equals(msg.getScope()) && msg.getScope() != null) {
-                PreparedStatement scopeStmt = conn.prepareStatement("select Serial_number from List_of_scopes where Name_of_the_scope = ? limit 1");
-                scopeStmt.setString(1, msg.getScope());
-                ResultSet scopeRS = scopeStmt.executeQuery();
-
-                try {
-                    scopeRS.getString(1);//если ничюво нету выдаст ошибку
-                } catch (SQLException e) {
-                    System.out.println(msg.getScope() + " хотят заказать, а он отсутствует на складе");
-                    ServerController.getInstance().log(msg.getScope() + " хотят заказать, а он отсутствует на складе");
-                    throw e;
-                }
-
-                PreparedStatement scopeDelStmt = conn.prepareStatement("delete from List_of_scopes  where Serial_number = ? ");
-                scopeDelStmt.setString(1, scopeRS.getString(1));
-                if (scopeDelStmt.executeUpdate() == 0) {
-                    conn.rollback();
-                    newZakaz(msg);
-                    throw new SQLException("кто-то забрал " + scopeRS.getString(1));
-                }
-            }
-            //
-            if (!"".equals(msg.getPodstvolnik()) && msg.getPodstvolnik() != null) {
-                PreparedStatement podstvStmt = conn.prepareStatement("select Serial_number from List_of_copies_of_grenade_launchers where Name_of_the_grenade_launcher = ? limit 1");
-                podstvStmt.setString(1, msg.getPodstvolnik());
-                ResultSet podstvRS = podstvStmt.executeQuery();
-
-                try {
-                    podstvRS.getString(1);//если товар отсутствует - выдаст ошибку
-                } catch (SQLException e) {
-                    System.out.println(msg.getPodstvolnik() + " хотят заказать, а он отсутствует на складе");
-                    ServerController.getInstance().log(msg.getPodstvolnik() + " хотят заказать, а он отсутствует на складе");
-                    throw e;
-                }
-
-                PreparedStatement podstvDelStmt = conn.prepareStatement("delete from List_of_copies_of_grenade_launchers where Serial_number = ? ");
-                podstvDelStmt.setString(1, podstvRS.getString(1));
-                if (podstvDelStmt.executeUpdate() == 0) {
-                    conn.rollback();
-                    newZakaz(msg);
-                    throw new SQLException("кто-то забрал " + podstvRS.getString(1));
-                }
-            }
-            //
-            PreparedStatement zakaziStmt = conn.prepareStatement("insert into Zakazi values(?, ?, ?, ?, ?, null)");
-            zakaziStmt.setString(1, msg.getName());
-            zakaziStmt.setDate(2, msg.getDate());
-            zakaziStmt.setString(3, msg.getWeapon());
-            zakaziStmt.setString(4, msg.getScope());
-            zakaziStmt.setString(5, msg.getPodstvolnik());
-            zakaziStmt.execute();
-            //
-            conn.commit();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            conn.rollback();
-            throw e;
-        } finally {
-            conn.close();
-        }
-    }
-
-    public UserZakaziQueryReplyMessage getZakazi(UserZakaziQueryMessage msg) throws SQLException {
-        UserZakaziQueryReplyMessage replyMessage = new UserZakaziQueryReplyMessage();
-        try (Connection conn = getConnection()) {
-            PreparedStatement stmt = conn.prepareStatement("SELECT weapon, date, scope, podstvolnik FROM Zakazi WHERE name = ?");
-            stmt.setString(1, msg.getName());
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                replyMessage.getSet()
-                        .add(
-                            new UserZakaziQueryReplyMessage.Zakaz(rs.getDate(2).toLocalDate().toString(),
-                            rs.getString(1), rs.getString(3), rs.getString(4))
-                        );
-            }
-        }
-        return replyMessage;
     }
 
     public AdminQueryReplyMessage executeAdminQuery(AdminQueryMessage msg) throws SQLException { //работает только для одной строки LOG
@@ -523,5 +338,10 @@ class DB {
             }
         }
         return tableNames;
+    }
+
+    public String getEnemy() { ///// транзакция
+
+
     }
 }

@@ -20,7 +20,7 @@ public class ClientApp extends Application {
         ClientApp.serverAddress = serverAddress;
     }
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         launch();
     }
 

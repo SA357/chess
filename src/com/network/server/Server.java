@@ -112,8 +112,10 @@ public class Server implements Runnable {
                     case adminQueryMessageCode:
                         handle((AdminQueryMessage) msg);
                         break;
-                    default:
+                    case startGameMessageCode:
+                        handle((StartGameMessage) msg);
                         break;
+                    default: break;
                 }
             } catch (EOFException e) {
                 System.out.println("Клиент ушёл \n" + e.getMessage());
@@ -217,14 +219,20 @@ public class Server implements Runnable {
             }
         }
 
-
-        private void handle(NewZakazQueryMessage msg) throws Exception {
-            db.newZakaz(msg);
-        }
-
-        private void handle(UserZakaziQueryMessage msg) throws Exception {
+        private void handle(StartGameMessage msg) throws Exception {
             if (db.checkClientNameExistence(msg.getName())) {
-                transport.sendMessage_CRYPTED(db.getZakazi(msg), socket, db.getPassword(msg.getName()));
+                if(db.checkClientNameExistence(msg.getEnemy())) {
+                    if(((GameRequestAnswer)transport.sendAndRecieve_CRYPTED()).getAnswer()) { //просим у enemy подтверждение
+                        db.addActiveSession(msg.getName(), enemy, );
+                        transport.sendMessage_CRYPTED(); //шлём игроку, что enemy хочет еграц
+                    }
+                    else {
+                        transport.sendMessage_CRYPTED(); //шлём игроку, что enemy не хочет еграц
+                    }
+                }
+                else {
+                    transport.sendMessage_CRYPTED(); //шлём игроку, что такого игрока не существует
+                }
             }
         }
     }

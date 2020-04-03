@@ -514,7 +514,7 @@ public final class Table extends Observable {
         Table.get().getDebugPanel().redo();
     }
 
-    private void moveMadeUpdate(final PlayerType playerType) {
+    private void moveMadeUpdate(final PlayerType playerType) {//////
         setChanged();
         notifyObservers(playerType);
     }
@@ -753,8 +753,10 @@ public final class Table extends Observable {
                                     tileId);
                             final MoveTransition transition = chessBoard.currentPlayer().makeMove(move);
                             if (transition.getMoveStatus().isDone()) {
-                                chessBoard = transition.getToBoard();
+                                chessBoard = transition.getToBoard();/////
                                 moveLog.addMove(move);
+                                //transport.sendMessage_CRYPTED(Account, chessBoard)
+                                //////////////////
                             }
                             sourceTile = null;
                             humanMovedPiece = null;
