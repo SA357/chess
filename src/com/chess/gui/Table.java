@@ -773,6 +773,7 @@ public final class Table extends Observable {
                             debugPanel.redo();
                         }
                     });
+                    //invokeLater(new Runnable() {    //высветить label о ходе игрока и залокать управление
                 }
 
                 @Override
