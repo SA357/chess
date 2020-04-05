@@ -1,5 +1,7 @@
 package com.network.message;
 
+import com.chess.engine.classic.board.Board;
+
 import javax.crypto.*;
 import java.io.*;
 import java.net.InetSocketAddress;
@@ -9,11 +11,8 @@ import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static com.network.message.MessageNames.*;
 
@@ -37,13 +36,67 @@ public abstract class Message implements Serializable {
         return name;
     }
 
+    
+    public static class MoveMessage extends Message {
 
-    public static class CryptedMessage extends Message {//19
+        private Board board;
+
+        public MoveMessage(String name, Board board) {
+            super(moveMessageCode, name);
+            this.board=board;
+        }
+
+        public Board getBoard() {
+            return board;
+        }
+    }
+
+    public static class GameInvitationMessage extends Message {
+        //private InetSocketAddress enemyInetSocketAddress;
+        private String enemyName;
+
+        public GameInvitationMessage(String name, String enemyName) {
+            super(gameInvitationMessageCode, name);
+            this.enemyName = enemyName;
+        }
+
+        public String getEnemyName() {
+            return enemyName;
+        }
+    }
+
+    public static class GameInvitationAnswer extends Message {
+
+        private boolean answer;
+        private boolean enemyExist;
+
+        public GameInvitationAnswer(String name, Boolean answer) {
+            super(gameInvitationAnswerCode, name);
+            this.answer = answer;
+            this.enemyExist = true;
+        }
+
+        public GameInvitationAnswer() {
+            super(gameInvitationAnswerCode, "SERVER");
+            this.enemyExist = false;
+        }
+
+        public Boolean getAnswer() {
+            return answer;
+        }
+
+        public boolean getEnemyExist() {
+            return enemyExist;
+        }
+    }
+
+
+    public static class CryptedMessage extends Message {
 
         private byte[] cipheredBytes;
 
         private CryptedMessage(String name) {
-            super(CryptedMessageCode, name);
+            super(cryptedMessageCode, name);
         }
 
         public static CryptedMessage crypt(Message msg, String password) throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
@@ -300,96 +353,6 @@ public abstract class Message implements Serializable {
             public String getWords() {
                 return words;
             }
-        }
-    }
-
-    public static class KastomQueryMessage extends Message {//14
-
-        public KastomQueryMessage(String name) {
-            super(kastomQueryMessageCode, name);
-        }
-    }
-
-    public static class UserZakaziQueryMessage extends Message {//16
-
-        public UserZakaziQueryMessage(String name) {
-            super(userZakaziQueryMessageCode, name);
-        }
-    }
-
-    public static class UserZakaziQueryReplyMessage extends Message {//17
-
-        private Set<Zakaz> set = new HashSet<>();
-
-        public UserZakaziQueryReplyMessage() {
-            super(userZakaziQueryReplyMessageCode, "SERVER");
-        }
-
-        public Set<Zakaz> getSet() {
-            return set;
-        }
-
-        public static class Zakaz implements Serializable {
-
-            public static final long serialVersionUID = 321;
-            private final String date;
-            private final String weapon;
-            private final String scope;
-            private final String podstvolnik;
-
-            public Zakaz(String date, String weapon, String scope, String podstvolnik) {
-                this.date = date;
-                this.weapon = weapon;
-                this.scope = scope;
-                this.podstvolnik = podstvolnik;
-            }
-
-            public String getDate() {
-                return date;
-            }
-
-            public String getWeapon() {
-                return weapon;
-            }
-
-            public String getScope() {
-                return scope;
-            }
-
-            public String getPodstvolnik() {
-                return podstvolnik;
-            }
-        }
-    }
-
-    public static class NewZakazQueryMessage extends Message {//18
-
-        private final String weapon;
-        private final String scope;
-        private final String podstvolnik;
-        private final Date date = Date.valueOf(LocalDate.now());
-
-        public NewZakazQueryMessage(String name, String weapon, String scope, String podstvolnik) {
-            super(newZakazQueryMessageCode, name);
-            this.weapon = weapon;
-            this.scope = scope;
-            this.podstvolnik = podstvolnik;
-        }
-
-        public String getWeapon() {
-            return weapon;
-        }
-
-        public String getScope() {
-            return scope;
-        }
-
-        public String getPodstvolnik() {
-            return podstvolnik;
-        }
-
-        public Date getDate() {
-            return date;
         }
     }
 

@@ -41,7 +41,7 @@ public class Transport {
         }
     }
 
-    public Message sendAndRecieve_CRYPTED(Message msg, String password, InetSocketAddress address) throws Exception {
+    public Message sendAndRecieve_CRYPTED(Message msg, InetSocketAddress address, String password) throws Exception {
         try (Socket socket = new Socket()) {
             socket.setSoTimeout(1000);
             socket.connect(address);

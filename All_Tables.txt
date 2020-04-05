@@ -1,0 +1,25 @@
+таблица: Zakazi
+name, date, weapon, scope, podstvolnik, id
+
+таблица: LOG
+name, date, text
+СЕРВЕР, 1586037600000, q ушёл
+СЕРВЕР, 1586037600000, q ушёл
+СЕРВЕР, 1586037600000, w ушёл
+
+таблица: Clients
+name, password, date, isAdmin
+ADMIN, 111, 1586037600000, 1
+Лариса Ивановна, 111, 1586037600000, 0
+Штеренберг, 111, 1586037600000, 0
+Бумбершнюк, 111, 1586037600000, 0
+Бусыгин Константин Николаевич, 111, 1586037600000, 1
+q, q, 1586037600000, 0
+w, w, 1586037600000, 0
+
+таблица: ActiveClients
+name, IP, portServerPart, date
+
+таблица: ActiveSessions
+id, player1, player2, date
+

@@ -1,7 +1,7 @@
 package com.network.client;
 
-import com.applicationGUI.ClientApp;
-import com.applicationGUI.GUIController;
+import com.network.client.applicationGUI.ClientApp;
+import com.network.client.applicationGUI.GUIController;
 import com.network.Transport;
 import com.network.message.Message;
 import com.network.message.Message.*;
@@ -67,7 +67,7 @@ public class ClientServerPart implements Runnable {
         public void run() {
             try (Socket sock = socket) {
                 Message msg = (Message) new ObjectInputStream(new BufferedInputStream(socket.getInputStream())).readObject();
-                if (msg.getCode()==CryptedMessageCode){
+                if (msg.getCode()== cryptedMessageCode){
                     msg = CryptedMessage.decrypt( (CryptedMessage) msg, Account.getPassword() );
                 }
                 switch (msg.getCode()) {
@@ -89,6 +89,11 @@ public class ClientServerPart implements Runnable {
                     case newServerAddressMessageCode:
                         NewServerAddressMessage newServerPortMessage = (NewServerAddressMessage) msg;
                         ClientApp.setServerAddress(newServerPortMessage.getInetSocketAddress());
+                        break;
+                    case gameInvitationMessageCode:
+                        GameInvitationMessage gameInvitationMessage = (GameInvitationMessage) msg;
+                        boolean answer = GUIController.getInstance().showInvitation(gameInvitationMessage);
+                        transport.sendMessage_CRYPTED(new GameInvitationAnswer(Account.getName(), answer), socket, Account.getPassword());
                         break;
                     default: break;
                 }

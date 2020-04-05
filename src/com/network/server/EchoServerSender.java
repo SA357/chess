@@ -76,7 +76,7 @@ public class EchoServerSender implements Runnable {
                 System.out.println(clientServerPartAddress + " ECHO");
                 ServerController.getInstance().logEcho(clientServerPartAddress + " ECHO");
                 Message msg = transport.sendAndRecieve_CRYPTED(
-                        new EchoMessage(), db.getPassword(db.getName(clientServerPartAddress)), clientServerPartAddress
+                        new EchoMessage(), clientServerPartAddress, db.getPassword(db.getName(clientServerPartAddress))
                 );
 
                 if (msg.getCode() == echoMessageCode) {

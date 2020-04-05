@@ -17,13 +17,15 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<TabPane fx:id="tabPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.applicationGUI.GUIController">
+<TabPane fx:id="tabPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.network.client.applicationGUI.GUIController">
   <tabs>
       <Tab closable="false" text="Поиск игры">
          <content>
             <AnchorPane prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <Button layoutX="212.0" layoutY="181.0" mnemonicParsing="false" text="Играть" />
+                  <Button layoutX="464.0" layoutY="260.0" mnemonicParsing="false" onAction="#sendInvitation" text="Играть" />
+                  <TextField fx:id="enemyNameTextField" layoutX="416.0" layoutY="223.0" promptText="Введите имя сопреника" />
+                  <TextArea fx:id="activeUsersCopy" editable="false" layoutX="623.0" layoutY="-2.0" prefHeight="574.0" prefWidth="277.0" promptText="пользователи онлайн" />
                </children>
             </AnchorPane>
          </content>

@@ -90,7 +90,7 @@ public class Server implements Runnable {
             try (Socket sock = socket) {
                 InetSocketAddress clientAppAddress = new InetSocketAddress(socket.getInetAddress(), socket.getPort()); //(InetSocketAddress) socket.getRemoteSocketAddress() или так
                 Message msg = (Message) new ObjectInputStream(new BufferedInputStream(socket.getInputStream())).readObject();
-                if (msg.getCode() == CryptedMessageCode) {
+                if (msg.getCode() == cryptedMessageCode) {
                     msg = CryptedMessage.decrypt((CryptedMessage) msg, db.getPassword(msg.getName()));
                 }
                 switch (msg.getCode()) {
@@ -112,8 +112,8 @@ public class Server implements Runnable {
                     case adminQueryMessageCode:
                         handle((AdminQueryMessage) msg);
                         break;
-                    case startGameMessageCode:
-                        handle((StartGameMessage) msg);
+                    case gameInvitationMessageCode:
+                        handle((GameInvitationMessage) msg);
                         break;
                     default: break;
                 }
@@ -219,19 +219,21 @@ public class Server implements Runnable {
             }
         }
 
-        private void handle(StartGameMessage msg) throws Exception {
+        private void handle(GameInvitationMessage msg) throws Exception {
             if (db.checkClientNameExistence(msg.getName())) {
-                if(db.checkClientNameExistence(msg.getEnemy())) {
-                    if(((GameRequestAnswer)transport.sendAndRecieve_CRYPTED()).getAnswer()) { //просим у enemy подтверждение
-                        db.addActiveSession(msg.getName(), enemy, );
-                        transport.sendMessage_CRYPTED(); //шлём игроку, что enemy хочет еграц
+                if(db.checkClientNameExistence(msg.getEnemyName())) {
+                    GameInvitationAnswer gameInvitationAnswer;
+                    if(
+                        (gameInvitationAnswer = (GameInvitationAnswer) transport.sendAndRecieve_CRYPTED(
+                            msg, db.getInetSocketAddress(msg.getEnemyName()), db.getPassword(msg.getEnemyName()))
+                        ).getAnswer()
+                    ) { //просим у enemy подтверждение
+                        db.addActiveSession(msg.getName(), msg.getEnemyName(), Date.valueOf(LocalDate.now()));
                     }
-                    else {
-                        transport.sendMessage_CRYPTED(); //шлём игроку, что enemy не хочет еграц
-                    }
+                    transport.sendMessage_CRYPTED(gameInvitationAnswer, socket, db.getPassword(msg.getName())); //шлём игроку хочет ли enemy еграц
                 }
                 else {
-                    transport.sendMessage_CRYPTED(); //шлём игроку, что такого игрока не существует
+                    transport.sendMessage_CRYPTED(new GameInvitationAnswer(), socket, db.getPassword(msg.getName())); //шлём игроку, что такого игрока не существует
                 }
             }
         }

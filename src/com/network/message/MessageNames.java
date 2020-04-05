@@ -16,10 +16,8 @@ public class MessageNames {
     public static final int settingReplyMessageCode = 11;
     public static final int adminQueryMessageCode = 12;
     public static final int adminQueryReplyMessageCode = 13;
-    public static final int kastomQueryMessageCode = 14;
-    public static final int kastomQueryReplyMessageCode = 15;
-    public static final int userZakaziQueryMessageCode = 16;
-    public static final int userZakaziQueryReplyMessageCode = 17;
-    public static final int newZakazQueryMessageCode = 18;
-    public static final int CryptedMessageCode = 19;
+    public static final int cryptedMessageCode = 14;
+    public static final int gameInvitationMessageCode = 15;
+    public static final int moveMessageCode = 16;
+    public static final int gameInvitationAnswerCode = 17;
 }

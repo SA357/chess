@@ -90,28 +90,14 @@ class DB {
         }
     }
     //TODO
-    public void closeActiveSession(String player, String player2, Date date) throws SQLException {
+    public void closeActiveSession(String player, String player2) throws SQLException {
 
     }
-
-
 
     void closeAllActiveSession() throws SQLException {
-        for (InetSocketAddress a : getAllActiveSessions()) {
-            closeActiveSession(a);
+        try (Connection conn = getConnection()) {
+            conn.createStatement().execute("DELETE FROM activeSessions");
         }
-    }
-
-    List<> getAllActiveSessions() throws SQLException {
-        List<InetSocketAddress> list = new ArrayList<>();
-        try (Connection conn = getConnection()) {dwa
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT IP, portServerPart from activeClients");
-            while (rs.next()) {
-                list.add(new InetSocketAddress(rs.getString(1), rs.getInt(2)));
-            }
-        }
-        return list;
     }
 
     public void addLog(String name, Date date, String text) throws SQLException {
@@ -338,10 +324,5 @@ class DB {
             }
         }
         return tableNames;
-    }
-
-    public String getEnemy() { ///// транзакция
-
-
     }
 }

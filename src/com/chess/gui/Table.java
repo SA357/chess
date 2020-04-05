@@ -9,6 +9,9 @@ import com.chess.engine.classic.player.ai.StockAlphaBeta;
 import com.chess.pgn.FenUtilities;
 import com.chess.pgn.MySqlGamePersistence;
 import com.google.common.collect.Lists;
+import com.network.Transport;
+import com.network.client.Account;
+import com.network.client.applicationGUI.ClientApp;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -18,11 +21,12 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 import static com.chess.pgn.PGNUtilities.persistPGNFile;
 import static com.chess.pgn.PGNUtilities.writeGameToPGNFile;
+import static com.network.message.Message.MoveMessage;
 import static javax.swing.JFrame.setDefaultLookAndFeelDecorated;
 import static javax.swing.SwingUtilities.*;
 
@@ -753,9 +757,13 @@ public final class Table extends Observable {
                                     tileId);
                             final MoveTransition transition = chessBoard.currentPlayer().makeMove(move);
                             if (transition.getMoveStatus().isDone()) {
-                                chessBoard = transition.getToBoard();/////
+                                chessBoard = transition.getToBoard();
                                 moveLog.addMove(move);
-                                //transport.sendMessage_CRYPTED(Account, chessBoard)
+                                /////
+                                new Transport()
+                                        .sendMessage_CRYPTED(new MoveMessage(Account.getName(),chessBoard),
+                                                ClientApp.getServerAddress(), Account.getPassword());//TODO
+                                //invokeLater(new Runnable() {    //высветить label о ходе игрока и залокать управление
                                 //////////////////
                             }
                             sourceTile = null;
@@ -773,7 +781,6 @@ public final class Table extends Observable {
                             debugPanel.redo();
                         }
                     });
-                    //invokeLater(new Runnable() {    //высветить label о ходе игрока и залокать управление
                 }
 
                 @Override
