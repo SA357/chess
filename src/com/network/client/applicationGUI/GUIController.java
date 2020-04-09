@@ -4,6 +4,7 @@ import com.chess.BlackWidow;
 import com.network.Transport;
 import com.network.client.Account;
 import com.network.client.ClientServerPart;
+import com.network.client.GameUtils;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -19,6 +20,9 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import static com.network.client.applicationGUI.Music.*;
 import static com.network.message.Message.*;
@@ -109,6 +113,7 @@ public class GUIController {
         Platform.runLater(() -> tabPane.getTabs().remove(adminTab));
         mediaPlayer = turnMusic(standard);
         standart_Style();
+        mute();////
     }
 
     public static GUIController getInstance() {
@@ -141,62 +146,73 @@ public class GUIController {
 
     @FXML private void sendInvitation() {
         String enemyName = enemyNameTextField.getText();
-        new Thread(() -> {
-            try {
-                GameInvitationAnswer answer = (
-                        GameInvitationAnswer)transport.sendAndRecieve_CRYPTED(
-                        new GameInvitationMessage(Account.getName(), enemyName),
-                        ClientApp.getServerAddress(), Account.getPassword()
-                );
-                if (!answer.getEnemyExist()){
+        if(!enemyName.equals(Account.getName())) {
+            new Thread(() -> {
+                try {
+                    GameInvitationAnswer answer = (GameInvitationAnswer) transport.sendAndRecieve_CRYPTED(
+                            new GameInvitationMessage(Account.getName(), enemyName),
+                            ClientApp.getServerAddress(), Account.getPassword(), true
+                    );
+                    if (!answer.getEnemyExist()) {
+                        Platform.runLater(() -> {
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setTitle("ОЙ-ой-ОЙ");
+                            alert.setHeaderText(null);
+                            alert.setContentText("ТАКОГО ПОЛЬЗОВАТЕЛЯ НЕ СУЩЕСТВУЕТ, ЛИБО ОН НЕ В СЕТИ");
+                            alert.showAndWait();
+                        });
+                        return;
+                    }
+                    if (!answer.getAnswer()) {
+                        Platform.runLater(() -> {
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setTitle("ОЙ-ой-ОЙ");
+                            alert.setHeaderText(null);
+                            alert.setContentText("ПОЛЬЗОВАТЕЛЬ ОТКЛОНИЛ ПРЕДЛОЖЕНИЕ");
+                            alert.showAndWait();
+                        });
+                        return;
+                    }
+                    if (answer.getAnswer()) {
+                        Platform.runLater(() -> {
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setOnCloseRequest(e->Platform.exit());//////////////
+                            alert.setTitle("готовьтесь к игре");
+                            alert.setHeaderText(null);
+                            alert.setContentText("ПОЛЬЗОВАТЕЛЬ ПРИНЯЛ ПРЕДЛОЖЕНИЕ");
+                            alert.showAndWait();
+                            try {
+                                Thread.sleep(3500);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            alert.close();
+                        });
+                        GameUtils.setIsPlayerTurn(true);
+                        BlackWidow.main(new String[]{});
+                        return;
+                    }
+                } catch (Exception e) {
                     Platform.runLater(() -> {
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("ОЙ-ой-ОЙ");
                         alert.setHeaderText(null);
-                        alert.setContentText("ТАКОГО ПОЛЬЗОВАТЕЛЯ НЕ СУЩЕСТВУЕТ, ЛИБО ОН НЕ В СЕТИ");
+                        alert.setContentText(String.valueOf(e));
                         alert.showAndWait();
                     });
-                    return;
+                    e.printStackTrace();
                 }
-                if (!answer.getAnswer()){
-                    Platform.runLater(() -> {
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("ОЙ-ой-ОЙ");
-                        alert.setHeaderText(null);
-                        alert.setContentText("ПОЛЬЗОВАТЕЛЬ ОТКЛОНИЛ ПРЕДЛОЖЕНИЕ");
-                        alert.showAndWait();
-                    });
-                    return;
-                }
-                if (answer.getAnswer()){
-                    Platform.runLater(() -> {
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("готовьтесь к игре");
-                        alert.setHeaderText(null);
-                        alert.setContentText("ПОЛЬЗОВАТЕЛЬ ПРИНЯЛ ПРЕДЛОЖЕНИЕ");
-                        alert.showAndWait();
-                        try {
-                            alert.wait(3500);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        alert.close();
-                    });
-                    BlackWidow.main(new String[]{});
-                    return;
-                }
-            } catch (Exception e) {
-                Platform.runLater(() -> {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("ОЙ-ой-ОЙ");
-                    alert.setHeaderText(null);
-                    alert.setContentText(e.getMessage());
-                    alert.showAndWait();
-                });
-                e.printStackTrace();
-            }
-        }).start();
-        Platform.runLater(() -> textField.setText(""));
+            }).start();
+        }
+        else {
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("НУ ДАЁТ");
+                alert.setHeaderText(null);
+                alert.setContentText("С САМИМ СОБОЙ ИГРАТЬ НЕЛЬЗЯ!!!");
+                alert.showAndWait();
+            });
+        }
     }
 
     @FXML private void changeSettings() {
@@ -263,7 +279,12 @@ public class GUIController {
         Platform.runLater(() -> textArea.appendText(line + "\n"));
     }
 
+    //final boolean[] answer = new boolean[1];
     public boolean showInvitation(GameInvitationMessage msg) {
+        //TODO
+        Lock lock = new ReentrantLock();
+        lock.lock();
+        Condition condition = lock.newCondition();
         AtomicBoolean answer = new AtomicBoolean(false);
         Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -274,9 +295,67 @@ public class GUIController {
             if(result.get() == ButtonType.YES){
                 answer.set(true);
             }
+            condition.signal();
         });
+        try {
+            condition.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        lock.unlock();
         return answer.get();
     }
+//    public class MyAlert extends Application implements Runnable{
+//        Message msg;
+//
+//        public MyAlert(Message msg) {
+//            this.msg = msg;
+//        }
+//
+//        public void show(){
+//            Stage stage = new Stage();
+//            stage.setTitle("ПРИШЛАШЕНИЕ");
+//            stage.setResizable(false);
+//            stage.initModality(Modality.APPLICATION_MODAL);
+//            stage.setOnCloseRequest(event->{
+//                answer[0] = false;
+//                Platform.exit();
+//            });
+//
+//            Button yes = new Button("yes");
+//            yes.setOnAction(e -> {
+//                answer[0] = true;
+//                Platform.exit();
+//            });
+//
+//            Button no = new Button("no");
+//            yes.setOnAction(e -> {
+//                answer[0] = false;
+//                Platform.exit();
+//            });
+//
+//            Label label = new Label(msg.getName() + " приглашает вас сыграть партеечку");
+//            VBox vBox = new VBox(6);
+//            vBox.getChildren().add(label);
+//            HBox hBox = new HBox(12);
+//            hBox.getChildren().addAll(no, yes);
+//            vBox.getChildren().add(hBox);
+//            //vBox.setAlignment(Pos.CENTER);
+//            Scene scene = new Scene(vBox);
+//            stage.setScene(scene);
+//            stage.showAndWait();
+//        }
+//
+//        @Override
+//        public void run() {
+//
+//        }
+//
+//        @Override
+//        public void start(Stage primaryStage) throws Exception {
+//            show();
+//        }
+//    }
 
     public void addActiveClient(String name) {
         Platform.runLater(() -> activeUsers.appendText(name + "\n"));

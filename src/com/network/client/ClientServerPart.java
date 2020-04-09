@@ -1,5 +1,7 @@
 package com.network.client;
 
+import com.chess.BlackWidow;
+import com.chess.gui.Table;
 import com.network.client.applicationGUI.ClientApp;
 import com.network.client.applicationGUI.GUIController;
 import com.network.Transport;
@@ -92,8 +94,19 @@ public class ClientServerPart implements Runnable {
                         break;
                     case gameInvitationMessageCode:
                         GameInvitationMessage gameInvitationMessage = (GameInvitationMessage) msg;
-                        boolean answer = GUIController.getInstance().showInvitation(gameInvitationMessage);
+                        //если уже играет, то можно вернуть, что уже играет //
+                        boolean answer = true; //GUIController.getInstance().showInvitation(gameInvitationMessage);
                         transport.sendMessage_CRYPTED(new GameInvitationAnswer(Account.getName(), answer), socket, Account.getPassword());
+                        if (answer){
+                            Account.setEnemyName(msg.getName());
+                            BlackWidow.main(new String[]{});
+                        }
+                        break;
+                    case moveMessageCode:
+                        MoveMessage moveMessage = (MoveMessage) msg;
+                        Table.get().updateGameBoard((moveMessage.getBoard()));
+                        Table.get().getBoardPanel().drawBoard((moveMessage.getBoard()));
+                        GameUtils.setIsPlayerTurn(true);
                         break;
                     default: break;
                 }

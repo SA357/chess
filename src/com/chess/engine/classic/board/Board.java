@@ -6,19 +6,16 @@ import com.chess.engine.classic.pieces.*;
 import com.chess.engine.classic.player.BlackPlayer;
 import com.chess.engine.classic.player.Player;
 import com.chess.engine.classic.player.WhitePlayer;
-import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMaps;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
+import java.io.Serializable;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public final class Board {
+public final class Board implements Serializable {
 
     private final Int2ObjectMap<Piece> boardConfig;
     private final Collection<Piece> whitePieces;

@@ -8,13 +8,14 @@ import com.chess.engine.classic.board.MoveTransition;
 import com.chess.engine.classic.pieces.King;
 import com.chess.engine.classic.pieces.Piece;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.collectingAndThen;
 
-public abstract class Player {
+public abstract class Player implements Serializable {
 
     protected final Board board;
     protected final King playerKing;

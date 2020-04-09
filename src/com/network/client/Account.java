@@ -7,6 +7,8 @@ public class Account {
     static private Boolean isAdmin;
     static private int clientServerPartPort;
 
+    static private String enemyName;
+
     public static int getClientServerPartPort() {
         return clientServerPartPort;
     }
@@ -37,5 +39,13 @@ public class Account {
 
     public static void setPassword(String password) {
         Account.password=password;
+    }
+
+    public static String getEnemyName() {
+        return enemyName;
+    }
+
+    public static void setEnemyName(String enemyName) {
+        Account.enemyName = enemyName;
     }
 }

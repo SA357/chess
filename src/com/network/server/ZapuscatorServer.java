@@ -22,8 +22,8 @@ public class ZapuscatorServer extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        //Files.deleteIfExists((Paths.get("KR.DB.db")));                ///*****удолятор бд
-        if (!Files.exists((Paths.get("KR.DB.db"))))create();
+        //Files.deleteIfExists((Paths.get("DB.db")));                ///*****удолятор бд
+        if (!Files.exists((Paths.get("DB.db"))))create();
         Server server = new Server(serverAddress);
         new Thread(server).start();
         stage.setTitle("SERVER");

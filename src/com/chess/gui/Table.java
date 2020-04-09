@@ -11,6 +11,7 @@ import com.chess.pgn.MySqlGamePersistence;
 import com.google.common.collect.Lists;
 import com.network.Transport;
 import com.network.client.Account;
+import com.network.client.GameUtils;
 import com.network.client.applicationGUI.ClientApp;
 
 import javax.imageio.ImageIO;
@@ -111,7 +112,7 @@ public final class Table extends Observable {
         return this.moveLog;
     }
 
-    private BoardPanel getBoardPanel() {
+    public BoardPanel getBoardPanel() { /////турутурурууу public
         return this.boardPanel;
     }
 
@@ -350,7 +351,7 @@ public final class Table extends Observable {
         chessMenChoiceSubMenu.add(holyWarriorsMenuItem);
 
         final JMenuItem rockMenMenuItem = new JMenuItem("Rock Men");
-        chessMenChoiceSubMenu.add(rockMenMenuItem);
+        //chessMenChoiceSubMenu.add(rockMenMenuItem); //TODO таких картинок нету
 
         final JMenuItem abstractMenMenuItem = new JMenuItem("Abstract Men");
         chessMenChoiceSubMenu.add(abstractMenMenuItem);
@@ -468,7 +469,7 @@ public final class Table extends Observable {
                 "\nisCastled = " +player.isCastled())+ "\n";
     }
 
-    private void updateGameBoard(final Board board) {
+    public void updateGameBoard(final Board board) { //турутуртрууу
         this.chessBoard = board;
     }
 
@@ -612,7 +613,7 @@ public final class Table extends Observable {
         }
     }
 
-    private class BoardPanel extends JPanel {
+    public class BoardPanel extends JPanel {
 
         final List<TilePanel> boardTiles;
 
@@ -630,7 +631,7 @@ public final class Table extends Observable {
             validate();
         }
 
-        void drawBoard(final Board board) {
+        public void drawBoard(final Board board) { ///////туруртрууртуууу
             removeAll();
             for (final TilePanel boardTile : boardDirection.traverse(boardTiles)) {
                 boardTile.drawTile(board);
@@ -736,51 +737,53 @@ public final class Table extends Observable {
             addMouseListener(new MouseListener() {
                 @Override
                 public void mouseClicked(final MouseEvent event) {
+                    if (GameUtils.isPlayerTurn()) {
+                        if (Table.get().getGameSetup().isAIPlayer(Table.get().getGameBoard().currentPlayer()) ||
+                                BoardUtils.isEndGame(Table.get().getGameBoard())) {
+                            return;
+                        }
 
-                    if(Table.get().getGameSetup().isAIPlayer(Table.get().getGameBoard().currentPlayer()) ||
-                       BoardUtils.isEndGame(Table.get().getGameBoard())) {
-                        return;
-                    }
-
-                    if (isRightMouseButton(event)) {
-                        sourceTile = null;
-                        humanMovedPiece = null;
-                    } else if (isLeftMouseButton(event)) {
-                        if (sourceTile == null) {
-                            sourceTile = chessBoard.getPiece(tileId);
-                            humanMovedPiece = sourceTile;
-                            if (humanMovedPiece == null) {
-                                sourceTile = null;
-                            }
-                        } else {
-                            final Move move = MoveFactory.createMove(chessBoard, sourceTile.getPiecePosition(),
-                                    tileId);
-                            final MoveTransition transition = chessBoard.currentPlayer().makeMove(move);
-                            if (transition.getMoveStatus().isDone()) {
-                                chessBoard = transition.getToBoard();
-                                moveLog.addMove(move);
-                                /////
-                                new Transport()
-                                        .sendMessage_CRYPTED(new MoveMessage(Account.getName(),chessBoard),
-                                                ClientApp.getServerAddress(), Account.getPassword());//TODO
-                                //invokeLater(new Runnable() {    //высветить label о ходе игрока и залокать управление
-                                //////////////////
-                            }
+                        if (isRightMouseButton(event)) {
                             sourceTile = null;
                             humanMovedPiece = null;
+                        } else if (isLeftMouseButton(event)) {
+                            if (sourceTile == null) {
+                                sourceTile = chessBoard.getPiece(tileId);
+                                humanMovedPiece = sourceTile;
+                                if (humanMovedPiece == null) {
+                                    sourceTile = null;
+                                }
+                            } else {
+                                final Move move = MoveFactory.createMove(chessBoard, sourceTile.getPiecePosition(),
+                                        tileId);
+                                final MoveTransition transition = chessBoard.currentPlayer().makeMove(move);
+                                if (transition.getMoveStatus().isDone()) {
+                                    chessBoard = transition.getToBoard();
+                                    moveLog.addMove(move);
+                                    /////
+                                    new Transport()
+                                            .sendMessage_CRYPTED(new MoveMessage(Account.getName(), chessBoard),
+                                                    ClientApp.getServerAddress(), Account.getPassword());//TODO
+                                    //invokeLater(new Runnable() {    //высветить label о ходе игрока и залокать управление //не обяз
+                                    //////////////////
+                                    GameUtils.setIsPlayerTurn(false);
+                                }
+                                sourceTile = null;
+                                humanMovedPiece = null;
+                            }
                         }
-                    }
-                    invokeLater(new Runnable() {
-                        public void run() {
-                            gameHistoryPanel.redo(chessBoard, moveLog);
-                            takenPiecesPanel.redo(moveLog);
-                            //if (gameSetup.isAIPlayer(chessBoard.currentPlayer())) {
+                        invokeLater(new Runnable() {
+                            public void run() {
+                                gameHistoryPanel.redo(chessBoard, moveLog);
+                                takenPiecesPanel.redo(moveLog);
+                                //if (gameSetup.isAIPlayer(chessBoard.currentPlayer())) {
                                 Table.get().moveMadeUpdate(PlayerType.HUMAN);
-                            //}
-                            boardPanel.drawBoard(chessBoard);
-                            debugPanel.redo();
-                        }
-                    });
+                                //}
+                                boardPanel.drawBoard(chessBoard);
+                                debugPanel.redo();
+                            }
+                        });
+                    }
                 }
 
                 @Override

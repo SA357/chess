@@ -5,7 +5,9 @@ import com.chess.engine.classic.pieces.Pawn;
 import com.chess.engine.classic.pieces.Piece;
 import com.chess.engine.classic.pieces.Rook;
 
-public abstract class Move {
+import java.io.Serializable;
+
+public abstract class Move implements Serializable {
 
     protected final Board board;
     protected final int destinationCoordinate;

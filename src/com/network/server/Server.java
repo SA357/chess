@@ -48,7 +48,7 @@ public class Server implements Runnable {
     static void shutdown() {
         quit = true;
         try {
-            db.writeAllTables();
+            //db.writeAllTables();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -114,6 +114,9 @@ public class Server implements Runnable {
                         break;
                     case gameInvitationMessageCode:
                         handle((GameInvitationMessage) msg);
+                        break;
+                    case moveMessageCode:
+                        handle((MoveMessage) msg);
                         break;
                     default: break;
                 }
@@ -220,12 +223,15 @@ public class Server implements Runnable {
         }
 
         private void handle(GameInvitationMessage msg) throws Exception {
+            ServerController.getInstance().log(msg.getName() + " хочет еграц");
             if (db.checkClientNameExistence(msg.getName())) {
                 if(db.checkClientNameExistence(msg.getEnemyName())) {
                     GameInvitationAnswer gameInvitationAnswer;
                     if(
-                        (gameInvitationAnswer = (GameInvitationAnswer) transport.sendAndRecieve_CRYPTED(
-                            msg, db.getInetSocketAddress(msg.getEnemyName()), db.getPassword(msg.getEnemyName()))
+                        (gameInvitationAnswer =
+                                (GameInvitationAnswer) transport.sendAndRecieve_CRYPTED(
+                                    msg, db.getInetSocketAddress(msg.getEnemyName()), db.getPassword(msg.getEnemyName()),true
+                                )
                         ).getAnswer()
                     ) { //просим у enemy подтверждение
                         db.addActiveSession(msg.getName(), msg.getEnemyName(), Date.valueOf(LocalDate.now()));
@@ -235,6 +241,16 @@ public class Server implements Runnable {
                 else {
                     transport.sendMessage_CRYPTED(new GameInvitationAnswer(), socket, db.getPassword(msg.getName())); //шлём игроку, что такого игрока не существует
                 }
+            }
+        }
+
+        private void handle(MoveMessage msg) throws Exception {
+            String enemyName;
+            if (
+                    db.checkClientNameExistence(msg.getName()) && db.checkClientActivness( enemyName = db.getEnemyName(msg.getName()) )
+            ) {
+                System.out.println(msg.getName() + " сделал ход");
+                transport.sendMessage_CRYPTED(msg, db.getInetSocketAddress(enemyName), db.getPassword(enemyName));
             }
         }
     }

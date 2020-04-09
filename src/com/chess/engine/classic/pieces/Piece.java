@@ -4,9 +4,10 @@ import com.chess.engine.classic.Alliance;
 import com.chess.engine.classic.board.Board;
 import com.chess.engine.classic.board.Move;
 
+import java.io.Serializable;
 import java.util.Collection;
 
-public abstract class Piece {
+public abstract class Piece implements Serializable {
 
     final PieceType pieceType;
     final Alliance pieceAlliance;

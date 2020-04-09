@@ -55,6 +55,25 @@ public class Transport {
         }
     }
 
+    /**
+     * @param withoutTimeOut параметр - лишь метка того, что у сокета не будет Timeout
+     */
+    public Message sendAndRecieve_CRYPTED(Message msg, InetSocketAddress address, String password, boolean withoutTimeOut) throws Exception {
+        if (!withoutTimeOut) {
+            throw new Exception(" Неправильное использование метода ");
+        }
+        try (Socket socket = new Socket()) {
+            socket.connect(address);
+            ObjectOutputStream o = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+            o.writeObject(CryptedMessage.crypt(msg, password));
+            o.flush();
+            return CryptedMessage.decrypt((CryptedMessage) new ObjectInputStream(new BufferedInputStream(socket.getInputStream())).readObject(), password);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
     public Message sendAndRecieve_NOT_CRYPTED(Message msg, InetSocketAddress address) throws Exception {
         try (Socket socket = new Socket()) {
             socket.setSoTimeout(1000);

@@ -17,7 +17,7 @@ import static com.network.message.Message.*;
 class DB {
 
     private Connection getConnection() throws SQLException {
-        String connStr = "jdbc:sqlite:KR.DB.db";  //"jdbc:sqlite::memory:"
+        String connStr = "jdbc:sqlite:DB.db";  //"jdbc:sqlite::memory:"
         return DriverManager.getConnection(connStr);
     }
 
@@ -82,7 +82,7 @@ class DB {
 
     public void addActiveSession(String player1, String player2, Date date) throws SQLException {
         try (Connection conn = getConnection()) {
-            PreparedStatement stmt = conn.prepareStatement("insert into activeClients(player1, player2, date) values (?, ?, ?)");
+            PreparedStatement stmt = conn.prepareStatement("insert into ActiveSessions(player1, player2, date) values (?, ?, ?)");
             stmt.setString(1, player1);
             stmt.setString(2, player2);
             stmt.setDate(3, date);
@@ -90,8 +90,21 @@ class DB {
         }
     }
     //TODO
-    public void closeActiveSession(String player, String player2) throws SQLException {
+    public void closeActiveSession(String player, String player2) throws SQLException{
 
+    }
+
+    public String getEnemyName(String player) throws SQLException{
+        try (Connection conn = getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement("select player1, player2 from ActiveSessions where player1 = ? or player2 = ?");
+            stmt.setString(1, player);
+            stmt.setString(2, player);
+            ResultSet rs = stmt.executeQuery();
+            if(rs.getString(1).equals(player)){
+                return rs.getString(2);
+            }
+            else return rs.getString(1);
+        }
     }
 
     void closeAllActiveSession() throws SQLException {
@@ -208,6 +221,14 @@ class DB {
         try (Connection conn = getConnection()) {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT EXISTS(SELECT name FROM Clients WHERE name = '" + name + "')");
+            return rs.getBoolean(1);
+        }
+    }
+
+    boolean checkClientActivness(String name) throws SQLException {
+        try (Connection conn = getConnection()) {
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT EXISTS(SELECT name FROM ActiveClients WHERE name = '" + name + "')");
             return rs.getBoolean(1);
         }
     }
