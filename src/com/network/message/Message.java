@@ -14,6 +14,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.chess.gui.Table.MoveLog;
 import static com.network.message.MessageNames.*;
 
 
@@ -39,21 +40,27 @@ public abstract class Message implements Serializable {
     
     public static class MoveMessage extends Message {
 
-        private Board board;
+        private final Board board;
+        private final MoveLog moveLog;
 
-        public MoveMessage(String name, Board board) {
+        public MoveMessage(String name, Board board, MoveLog moveLog) {
             super(moveMessageCode, name);
-            this.board=board;
+            this.board = board;
+            this.moveLog = moveLog;
         }
 
         public Board getBoard() {
             return board;
         }
+
+        public MoveLog getMoveLog() {
+            return moveLog;
+        }
     }
 
     public static class GameInvitationMessage extends Message {
         //private InetSocketAddress enemyInetSocketAddress;
-        private String enemyName;
+        private final String enemyName;
 
         public GameInvitationMessage(String name, String enemyName) {
             super(gameInvitationMessageCode, name);

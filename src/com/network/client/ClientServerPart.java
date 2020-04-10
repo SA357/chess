@@ -105,7 +105,8 @@ public class ClientServerPart implements Runnable {
                     case moveMessageCode:
                         MoveMessage moveMessage = (MoveMessage) msg;
                         Table.get().updateGameBoard((moveMessage.getBoard()));
-                        Table.get().getBoardPanel().drawBoard((moveMessage.getBoard()));
+                        Table.get().setMoveLog((moveMessage.getMoveLog()));
+                        Table.get().redo();
                         GameUtils.setIsPlayerTurn(true);
                         break;
                     default: break;

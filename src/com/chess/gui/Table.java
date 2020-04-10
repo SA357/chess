@@ -22,6 +22,7 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 import java.util.*;
 
@@ -38,8 +39,9 @@ public final class Table extends Observable {
     private final TakenPiecesPanel takenPiecesPanel;
     private final DebugPanel debugPanel;
     private final BoardPanel boardPanel;
-    private final MoveLog moveLog;
+    private MoveLog moveLog; ///тутутууу
     private final GameSetup gameSetup;
+    private final Authors authors;
     private Board chessBoard;
     private Move computerMove;
     private Piece sourceTile;
@@ -58,7 +60,7 @@ public final class Table extends Observable {
     private static final Table INSTANCE = new Table();
 
     private Table() {
-        this.gameFrame = new JFrame("BlackWidow");
+        this.gameFrame = new JFrame("PRO_Labs");
         final JMenuBar tableMenuBar = new JMenuBar();
         populateMenuBar(tableMenuBar);
         this.gameFrame.setJMenuBar(tableMenuBar);
@@ -85,15 +87,20 @@ public final class Table extends Observable {
         }
 
         this.gameSetup = new GameSetup(this.gameFrame, true);
+        this.authors = new Authors(this.gameFrame, true);//////////
         this.gameFrame.add(this.takenPiecesPanel, BorderLayout.WEST);
         this.gameFrame.add(this.boardPanel, BorderLayout.CENTER);
         this.gameFrame.add(this.gameHistoryPanel, BorderLayout.EAST);
         this.gameFrame.add(debugPanel, BorderLayout.SOUTH);
         setDefaultLookAndFeelDecorated(true);
-        this.gameFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        //this.gameFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.gameFrame.setSize(OUTER_FRAME_DIMENSION);
         center(this.gameFrame);
         this.gameFrame.setVisible(true);
+    }
+
+    public void setMoveLog(MoveLog moveLog) {
+        this.moveLog = moveLog;
     }
 
     public static Table get() {
@@ -149,9 +156,10 @@ public final class Table extends Observable {
     }
 
     private void populateMenuBar(final JMenuBar tableMenuBar) {
-        tableMenuBar.add(createFileMenu());
+        //tableMenuBar.add(createFileMenu());
         tableMenuBar.add(createPreferencesMenu());
-        tableMenuBar.add(createOptionsMenu());
+        tableMenuBar.add((Component) createAuthorsMenu());
+        //tableMenuBar.add(createOptionsMenu());
     }
 
     private static void center(final JFrame frame) {
@@ -230,6 +238,21 @@ public final class Table extends Observable {
         return filesMenu;
     }
 
+    private MenuElement createAuthorsMenu() {
+        //final JMenu authorsMenu = new JMenu("Authors");
+        //authorsMenu.setMnemonic(KeyEvent.VK_A);
+        final JMenuItem authorsMenuItem = new JMenuItem("Authors", KeyEvent.VK_A);
+        authorsMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                Table.get().authors.promptUser();
+            }
+        });
+        //authorsMenu.add(authorsMenuItem);
+
+        return authorsMenuItem;
+    }
+
     private JMenu createOptionsMenu() {
 
         final JMenu optionsMenu = new JMenu("Options");
@@ -263,7 +286,6 @@ public final class Table extends Observable {
                 if(lastMove != null) {
                     System.out.println(MoveUtils.exchangeScore(lastMove));
                 }
-
             }
         });
         optionsMenu.add(escapeAnalysis);
@@ -351,13 +373,13 @@ public final class Table extends Observable {
         chessMenChoiceSubMenu.add(holyWarriorsMenuItem);
 
         final JMenuItem rockMenMenuItem = new JMenuItem("Rock Men");
-        //chessMenChoiceSubMenu.add(rockMenMenuItem); //TODO таких картинок нету
+        //chessMenChoiceSubMenu.add(rockMenMenuItem); // таких картинок нету
 
         final JMenuItem abstractMenMenuItem = new JMenuItem("Abstract Men");
         chessMenChoiceSubMenu.add(abstractMenMenuItem);
 
         final JMenuItem woodMenMenuItem = new JMenuItem("Wood Men");
-        chessMenChoiceSubMenu.add(woodMenMenuItem);
+        //chessMenChoiceSubMenu.add(woodMenMenuItem);// таких картинок нету
 
         final JMenuItem fancyMenMenuItem = new JMenuItem("Fancy Men");
         chessMenChoiceSubMenu.add(fancyMenMenuItem);
@@ -457,7 +479,7 @@ public final class Table extends Observable {
             }
         });
 
-        preferencesMenu.add(cbUseBookMoves);
+        //preferencesMenu.add(cbUseBookMoves);
 
         return preferencesMenu;
 
@@ -631,7 +653,7 @@ public final class Table extends Observable {
             validate();
         }
 
-        public void drawBoard(final Board board) { ///////туруртрууртуууу
+        private void drawBoard(final Board board) { ///////туруртрууртуууу
             removeAll();
             for (final TilePanel boardTile : boardDirection.traverse(boardTiles)) {
                 boardTile.drawTile(board);
@@ -650,7 +672,7 @@ public final class Table extends Observable {
         }
 
         void setTileLightColor(final Board board,
-                                      final Color lightColor) {
+                               final Color lightColor) {
             for (final TilePanel boardTile : boardTiles) {
                 boardTile.setLightTileColor(lightColor);
             }
@@ -688,7 +710,7 @@ public final class Table extends Observable {
 
     }
 
-    public static class MoveLog {
+    public static class MoveLog implements Serializable {
 
         private final List<Move> moves;
 
@@ -759,10 +781,10 @@ public final class Table extends Observable {
                                 final MoveTransition transition = chessBoard.currentPlayer().makeMove(move);
                                 if (transition.getMoveStatus().isDone()) {
                                     chessBoard = transition.getToBoard();
-                                    moveLog.addMove(move);
+                                    moveLog.addMove(move);//слать в сообщении moveLog ///почему он вообще видит, что он существет//TODO
                                     /////
                                     new Transport()
-                                            .sendMessage_CRYPTED(new MoveMessage(Account.getName(), chessBoard),
+                                            .sendMessage_CRYPTED(new MoveMessage(Account.getName(), chessBoard, moveLog),
                                                     ClientApp.getServerAddress(), Account.getPassword());//TODO
                                     //invokeLater(new Runnable() {    //высветить label о ходе игрока и залокать управление //не обяз
                                     //////////////////
@@ -772,35 +794,17 @@ public final class Table extends Observable {
                                 humanMovedPiece = null;
                             }
                         }
-                        invokeLater(new Runnable() {
-                            public void run() {
-                                gameHistoryPanel.redo(chessBoard, moveLog);
-                                takenPiecesPanel.redo(moveLog);
-                                //if (gameSetup.isAIPlayer(chessBoard.currentPlayer())) {
-                                Table.get().moveMadeUpdate(PlayerType.HUMAN);
-                                //}
-                                boardPanel.drawBoard(chessBoard);
-                                debugPanel.redo();
-                            }
-                        });
+                        redo();
                     }
                 }
-
                 @Override
-                public void mouseExited(final MouseEvent e) {
-                }
-
+                public void mouseExited(final MouseEvent e) {}
                 @Override
-                public void mouseEntered(final MouseEvent e) {
-                }
-
+                public void mouseEntered(final MouseEvent e) {}
                 @Override
-                public void mouseReleased(final MouseEvent e) {
-                }
-
+                public void mouseReleased(final MouseEvent e) {}
                 @Override
-                public void mousePressed(final MouseEvent e) {
-                }
+                public void mousePressed(final MouseEvent e) {}
             });
             validate();
         }
@@ -893,6 +897,20 @@ public final class Table extends Observable {
                 setBackground(this.tileId % 2 != 0 ? lightTileColor : darkTileColor);
             }
         }
+    }
+
+    public void redo() {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                gameHistoryPanel.redo(chessBoard, moveLog);
+                takenPiecesPanel.redo(moveLog);
+                //if (gameSetup.isAIPlayer(chessBoard.currentPlayer())) {
+                Table.get().moveMadeUpdate(PlayerType.HUMAN);
+                //}
+                Table.get().getBoardPanel().drawBoard(chessBoard);////////
+                debugPanel.redo();
+            }
+        });
     }
 }
 

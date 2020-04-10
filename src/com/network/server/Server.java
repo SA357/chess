@@ -225,7 +225,7 @@ public class Server implements Runnable {
         private void handle(GameInvitationMessage msg) throws Exception {
             ServerController.getInstance().log(msg.getName() + " хочет еграц");
             if (db.checkClientNameExistence(msg.getName())) {
-                if(db.checkClientNameExistence(msg.getEnemyName())) {
+                if(db.checkClientActivness(msg.getEnemyName())) {
                     GameInvitationAnswer gameInvitationAnswer;
                     if(
                         (gameInvitationAnswer =
