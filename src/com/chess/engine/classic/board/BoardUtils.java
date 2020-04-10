@@ -5,8 +5,6 @@ import com.chess.engine.classic.pieces.Piece;
 
 import java.util.*;
 
-import static com.chess.engine.classic.board.Move.MoveFactory;
-
 public enum  BoardUtils {
 
     INSTANCE;
@@ -35,9 +33,7 @@ public enum  BoardUtils {
 
     private static List<Boolean> initColumn(int columnNumber) {
         final Boolean[] column = new Boolean[NUM_TILES];
-        for(int i = 0; i < column.length; i++) {
-            column[i] = false;
-        }
+        Arrays.fill(column, false);
         do {
             column[columnNumber] = true;
             columnNumber += NUM_TILES_PER_ROW;
@@ -47,9 +43,7 @@ public enum  BoardUtils {
 
     private static List<Boolean> initRow(int rowNumber) {
         final Boolean[] row = new Boolean[NUM_TILES];
-        for(int i = 0; i < row.length; i++) {
-            row[i] = false;
-        }
+        Arrays.fill(row, false);
         do {
             row[rowNumber] = true;
             rowNumber++;
@@ -89,16 +83,6 @@ public enum  BoardUtils {
         return ALGEBRAIC_NOTATION.get(coordinate);
     }
 
-    public static boolean isThreatenedBoardImmediate(final Board board) {
-        return board.whitePlayer().isInCheck() || board.blackPlayer().isInCheck();
-    }
-
-    public static boolean kingThreat(final Move move) {
-        final Board board = move.getBoard();
-        final MoveTransition transition = board.currentPlayer().makeMove(move);
-        return transition.getToBoard().currentPlayer().isInCheck();
-    }
-
     public static boolean isKingPawnTrap(final Board board,
                                          final King king,
                                          final int frontTile) {
@@ -106,27 +90,6 @@ public enum  BoardUtils {
         return piece != null &&
                piece.getPieceType().isPawn() &&
                piece.getPieceAllegiance() != king.getPieceAllegiance();
-    }
-
-    public static int mvvlva(final Move move) {
-        final Piece movingPiece = move.getMovedPiece();
-        if(move.isAttack()) {
-            final Piece attackedPiece = move.getAttackedPiece();
-            return (attackedPiece.getPieceValue() - movingPiece.getPieceValue() +  Piece.PieceType.KING.getPieceValue()) * 100;
-        }
-        return Piece.PieceType.KING.getPieceValue() - movingPiece.getPieceValue();
-    }
-
-    public static List<Move> lastNMoves(final Board board, int N) {
-        final List<Move> moveHistory = new ArrayList<>();
-        Move currentMove = board.getTransitionMove();
-        int i = 0;
-        while(currentMove != MoveFactory.getNullMove() && i < N) {
-            moveHistory.add(currentMove);
-            currentMove = currentMove.getBoard().getTransitionMove();
-            i++;
-        }
-        return Collections.unmodifiableList(moveHistory);
     }
 
     public static boolean isEndGame(final Board board) {

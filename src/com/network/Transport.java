@@ -60,7 +60,7 @@ public class Transport {
      */
     public Message sendAndRecieve_CRYPTED(Message msg, InetSocketAddress address, String password, boolean withoutTimeOut) throws Exception {
         if (!withoutTimeOut) {
-            throw new Exception(" Неправильное использование метода ");
+            throw new RuntimeException(" Неправильное использование метода ");
         }
         try (Socket socket = new Socket()) {
             socket.connect(address);
