@@ -423,7 +423,6 @@ public final class Table extends Observable {
                         if (BoardUtils.isEndGame(Table.get().getGameBoard())) {
                             return;
                         }
-
                         if (isRightMouseButton(event)) {
                             sourceTile = null;
                             humanMovedPiece = null;
@@ -440,13 +439,13 @@ public final class Table extends Observable {
                                 final MoveTransition transition = chessBoard.currentPlayer().makeMove(move);
                                 if (transition.getMoveStatus().isDone()) {
                                     chessBoard = transition.getToBoard();
-                                    moveLog.addMove(move);//слать в сообщении moveLog ///почему он вообще видит, что он существет//TODO
+                                    moveLog.addMove(move);///почему он вообще видит, что он существет//TODO
                                     /////
                                     new Transport()
                                             .sendMessage_CRYPTED(new MoveMessage(Account.getName(), chessBoard, moveLog),
                                                     ClientApp.getServerAddress(), Account.getPassword());//TODO
-                                    //invokeLater(new Runnable() {    //высветить label о ходе игрока и залокать управление //не обяз
-                                    //////////////////
+                                    //invokeLater(new Runnable() {    //можно высветить label о ходе игрока и залокать управление //не обяз
+                                    //////
                                     GameUtils.setIsPlayerTurn(false);
                                 }
                                 sourceTile = null;
