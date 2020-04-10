@@ -443,7 +443,7 @@ public final class Table extends Observable {
                                     /////
                                     new Transport()
                                             .sendMessage_CRYPTED(new MoveMessage(Account.getName(), chessBoard, moveLog),
-                                                    ClientApp.getServerAddress(), Account.getPassword());//TODO
+                                                    ClientApp.getServerAddress(), Account.getPassword());
                                     //invokeLater(new Runnable() {    //можно высветить label о ходе игрока и залокать управление //не обяз
                                     //////
                                     GameUtils.setIsPlayerTurn(false);
