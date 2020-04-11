@@ -1,9 +1,8 @@
-package com.chess.engine.classic.board;
+package com.chess.engine.board;
 
-import com.chess.engine.classic.board.Board.Builder;
-import com.chess.engine.classic.pieces.Pawn;
-import com.chess.engine.classic.pieces.Piece;
-import com.chess.engine.classic.pieces.Rook;
+import com.chess.engine.pieces.Pawn;
+import com.chess.engine.pieces.Piece;
+import com.chess.engine.pieces.Rook;
 
 import java.io.Serializable;
 
@@ -84,7 +83,7 @@ public abstract class Move implements Serializable {
     }
 
     public Board execute() {
-        final Board.Builder builder = new Builder();
+        final Board.Builder builder = new Board.Builder();
         this.board.currentPlayer().getActivePieces().stream().filter(piece -> !this.movedPiece.equals(piece)).forEach(builder::setPiece);
         this.board.currentPlayer().getOpponent().getActivePieces().forEach(builder::setPiece);
         builder.setPiece(this.movedPiece.movePiece(this));
@@ -94,7 +93,7 @@ public abstract class Move implements Serializable {
     }
 
     public Board undo() {
-        final Board.Builder builder = new Builder();
+        final Board.Builder builder = new Board.Builder();
         this.board.getAllPieces().stream().forEach(builder::setPiece);
         builder.setMoveMaker(this.board.currentPlayer().getAlliance());
         return builder.build();
@@ -163,7 +162,7 @@ public abstract class Move implements Serializable {
         @Override
         public Board execute() {
             final Board pawnMovedBoard = this.decoratedMove.execute();
-            final Board.Builder builder = new Builder();
+            final Board.Builder builder = new Board.Builder();
             pawnMovedBoard.currentPlayer().getActivePieces().stream().filter(piece -> !this.promotedPawn.equals(piece)).forEach(builder::setPiece);
             pawnMovedBoard.currentPlayer().getOpponent().getActivePieces().forEach(builder::setPiece);
             builder.setPiece(this.promotionPiece.movePiece(this));
@@ -296,7 +295,7 @@ public abstract class Move implements Serializable {
 
         @Override
         public Board execute() {
-            final Board.Builder builder = new Builder();
+            final Board.Builder builder = new Board.Builder();
             this.board.currentPlayer().getActivePieces().stream().filter(piece -> !this.movedPiece.equals(piece)).forEach(builder::setPiece);
             this.board.currentPlayer().getOpponent().getActivePieces().stream().filter(piece -> !piece.equals(this.getAttackedPiece())).forEach(builder::setPiece);
             builder.setPiece(this.movedPiece.movePiece(this));
@@ -307,7 +306,7 @@ public abstract class Move implements Serializable {
 
         @Override
         public Board undo() {
-            final Board.Builder builder = new Builder();
+            final Board.Builder builder = new Board.Builder();
             this.board.getAllPieces().forEach(builder::setPiece);
             builder.setEnPassantPawn((Pawn)this.getAttackedPiece());
             builder.setMoveMaker(this.board.currentPlayer().getAlliance());
@@ -332,7 +331,7 @@ public abstract class Move implements Serializable {
 
         @Override
         public Board execute() {
-            final Board.Builder builder = new Builder();
+            final Board.Builder builder = new Board.Builder();
             this.board.currentPlayer().getActivePieces().stream().filter(piece -> !this.movedPiece.equals(piece)).forEach(builder::setPiece);
             this.board.currentPlayer().getOpponent().getActivePieces().forEach(builder::setPiece);
             final Pawn movedPawn = (Pawn)this.movedPiece.movePiece(this);
@@ -380,7 +379,7 @@ public abstract class Move implements Serializable {
 
         @Override
         public Board execute() {
-            final Board.Builder builder = new Builder();
+            final Board.Builder builder = new Board.Builder();
             for (final Piece piece : this.board.getAllPieces()) {
                 if (!this.movedPiece.equals(piece) && !this.castleRook.equals(piece)) {
                     builder.setPiece(piece);

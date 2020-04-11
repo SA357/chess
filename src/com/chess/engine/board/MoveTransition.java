@@ -1,6 +1,6 @@
-package com.chess.engine.classic.board;
+package com.chess.engine.board;
 
-import com.chess.engine.classic.board.Move.MoveStatus;
+import com.chess.engine.board.Move.MoveStatus;
 
 public final class MoveTransition {
 

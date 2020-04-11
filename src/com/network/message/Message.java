@@ -1,6 +1,6 @@
 package com.network.message;
 
-import com.chess.engine.classic.board.Board;
+import com.chess.engine.board.Board;
 
 import javax.crypto.*;
 import java.io.*;

@@ -1,13 +1,13 @@
-package com.chess.engine.classic.player;
+package com.chess.engine.player;
 
-import com.chess.engine.classic.Alliance;
-import com.chess.engine.classic.board.Board;
-import com.chess.engine.classic.board.BoardUtils;
-import com.chess.engine.classic.board.Move;
-import com.chess.engine.classic.board.Move.KingSideCastleMove;
-import com.chess.engine.classic.board.Move.QueenSideCastleMove;
-import com.chess.engine.classic.pieces.Piece;
-import com.chess.engine.classic.pieces.Rook;
+import com.chess.engine.Alliance;
+import com.chess.engine.board.Board;
+import com.chess.engine.board.BoardUtils;
+import com.chess.engine.board.Move;
+import com.chess.engine.board.Move.KingSideCastleMove;
+import com.chess.engine.board.Move.QueenSideCastleMove;
+import com.chess.engine.pieces.Piece;
+import com.chess.engine.pieces.Rook;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -37,8 +37,8 @@ public final class BlackPlayer extends Player {
             if (this.board.getPiece(5) == null && this.board.getPiece(6) == null) {
                 final Piece kingSideRook = this.board.getPiece(7);
                 if (kingSideRook != null && kingSideRook.isFirstMove() &&
-                        Player.calculateAttacksOnTile(5, opponentLegals).isEmpty() &&
-                        Player.calculateAttacksOnTile(6, opponentLegals).isEmpty() &&
+                        calculateAttacksOnTile(5, opponentLegals).isEmpty() &&
+                        calculateAttacksOnTile(6, opponentLegals).isEmpty() &&
                         kingSideRook.getPieceType().isRook()) {
                     if (!BoardUtils.isKingPawnTrap(this.board, this.playerKing, 12)) {
                         kingCastles.add(
@@ -52,8 +52,8 @@ public final class BlackPlayer extends Player {
                     this.board.getPiece(3) == null) {
                 final Piece queenSideRook = this.board.getPiece(0);
                 if (queenSideRook != null && queenSideRook.isFirstMove() &&
-                        Player.calculateAttacksOnTile(2, opponentLegals).isEmpty() &&
-                        Player.calculateAttacksOnTile(3, opponentLegals).isEmpty() &&
+                        calculateAttacksOnTile(2, opponentLegals).isEmpty() &&
+                        calculateAttacksOnTile(3, opponentLegals).isEmpty() &&
                         queenSideRook.getPieceType().isRook()) {
                     if (!BoardUtils.isKingPawnTrap(this.board, this.playerKing, 12)) {
                         kingCastles.add(

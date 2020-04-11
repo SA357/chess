@@ -1,12 +1,12 @@
-package com.chess.engine.classic.player;
+package com.chess.engine.player;
 
-import com.chess.engine.classic.Alliance;
-import com.chess.engine.classic.board.Board;
-import com.chess.engine.classic.board.Move;
-import com.chess.engine.classic.board.Move.MoveStatus;
-import com.chess.engine.classic.board.MoveTransition;
-import com.chess.engine.classic.pieces.King;
-import com.chess.engine.classic.pieces.Piece;
+import com.chess.engine.Alliance;
+import com.chess.engine.board.Board;
+import com.chess.engine.board.Move;
+import com.chess.engine.board.Move.MoveStatus;
+import com.chess.engine.board.MoveTransition;
+import com.chess.engine.pieces.King;
+import com.chess.engine.pieces.Piece;
 
 import java.io.Serializable;
 import java.util.Collection;

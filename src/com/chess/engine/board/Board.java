@@ -1,11 +1,11 @@
-package com.chess.engine.classic.board;
+package com.chess.engine.board;
 
-import com.chess.engine.classic.Alliance;
-import com.chess.engine.classic.board.Move.MoveFactory;
-import com.chess.engine.classic.pieces.*;
-import com.chess.engine.classic.player.BlackPlayer;
-import com.chess.engine.classic.player.Player;
-import com.chess.engine.classic.player.WhitePlayer;
+import com.chess.engine.Alliance;
+import com.chess.engine.board.Move.MoveFactory;
+import com.chess.engine.pieces.*;
+import com.chess.engine.player.BlackPlayer;
+import com.chess.engine.player.Player;
+import com.chess.engine.player.WhitePlayer;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMaps;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;

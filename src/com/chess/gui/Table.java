@@ -1,9 +1,9 @@
 package com.chess.gui;
 
-import com.chess.engine.classic.board.*;
-import com.chess.engine.classic.board.Move.MoveFactory;
-import com.chess.engine.classic.pieces.Piece;
-import com.chess.engine.classic.player.Player;
+import com.chess.engine.board.*;
+import com.chess.engine.board.Move.MoveFactory;
+import com.chess.engine.pieces.Piece;
+import com.chess.engine.player.Player;
 import com.google.common.collect.Lists;
 import com.network.Transport;
 import com.network.client.Account;
