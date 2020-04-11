@@ -36,7 +36,6 @@ public final class Table extends Observable {
     private final DebugPanel debugPanel;
     private final BoardPanel boardPanel;
     private MoveLog moveLog;
-    private final Authors authors;
     private Board chessBoard;
     private Piece sourceTile;
     private Piece humanMovedPiece;
@@ -77,13 +76,12 @@ public final class Table extends Observable {
             e.printStackTrace();
         }
 
-        this.authors = new Authors(this.gameFrame, true);//////////
         this.gameFrame.add(this.takenPiecesPanel, BorderLayout.WEST);
         this.gameFrame.add(this.boardPanel, BorderLayout.CENTER);
         this.gameFrame.add(this.gameHistoryPanel, BorderLayout.EAST);
         this.gameFrame.add(debugPanel, BorderLayout.SOUTH);
         setDefaultLookAndFeelDecorated(true);
-        //this.gameFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        this.gameFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.gameFrame.setSize(OUTER_FRAME_DIMENSION);
         center(this.gameFrame);
         this.gameFrame.setVisible(true);
@@ -138,9 +136,7 @@ public final class Table extends Observable {
     }
 
     private void populateMenuBar(final JMenuBar tableMenuBar) {
-        //tableMenuBar.add(createFileMenu());
         tableMenuBar.add(createPreferencesMenu());
-        tableMenuBar.add((Component) createAuthorsMenu());
         //tableMenuBar.add(createOptionsMenu());
     }
 
@@ -151,16 +147,6 @@ public final class Table extends Observable {
         final int x = (dim.width - w) / 2;
         final int y = (dim.height - h) / 2;
         frame.setLocation(x, y);
-    }
-
-    private MenuElement createAuthorsMenu() {
-        //final JMenu authorsMenu = new JMenu("Authors");
-        //authorsMenu.setMnemonic(KeyEvent.VK_A);
-        final JMenuItem authorsMenuItem = new JMenuItem("Authors", KeyEvent.VK_A);
-        authorsMenuItem.addActionListener(e -> Table.get().authors.promptUser());
-        //authorsMenu.add(authorsMenuItem);
-
-        return authorsMenuItem;
     }
 
     private JMenu createOptionsMenu() {
