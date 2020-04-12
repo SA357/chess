@@ -281,7 +281,6 @@ public class GUIController {
 
     //final boolean[] answer = new boolean[1];
     public boolean showInvitation(GameInvitationMessage msg) {
-        //TODO
         Lock lock = new ReentrantLock();
         lock.lock();
         Condition condition = lock.newCondition();
