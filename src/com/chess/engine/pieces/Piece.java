@@ -46,8 +46,6 @@ public abstract class Piece implements Serializable {
         return this.pieceType.getPieceValue();
     }
 
-    public abstract int locationBonus();
-
     public abstract Piece movePiece(Move move);
 
     public abstract Collection<Move> calculateLegalMoves(final Board board);

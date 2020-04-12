@@ -71,16 +71,6 @@ public class TestPlayer {
         assertTrue(t3.getMoveStatus().isDone());
     }
 
-    @Test
-    public void testUnmakeMove() {
-        final Board board = Board.createStandardBoard();
-        final Move m1 = MoveFactory.createMove(board, BoardUtils.INSTANCE.getCoordinateAtPosition("e2"),
-                BoardUtils.INSTANCE.getCoordinateAtPosition("e4"));
-        final MoveTransition t1 = board.currentPlayer()
-                .makeMove(m1);
-        assertTrue(t1.getMoveStatus().isDone());
-        t1.getToBoard().currentPlayer().getOpponent().unMakeMove(m1);
-    }
 
     @Test
     public void testIllegalMove() {

@@ -95,7 +95,7 @@ public class ClientServerPart implements Runnable {
                     case gameInvitationMessageCode:
                         GameInvitationMessage gameInvitationMessage = (GameInvitationMessage) msg;
                         //если уже играет, то можно вернуть, что уже играет //
-                        boolean answer = true; //GUIController.getInstance().showInvitation(gameInvitationMessage);
+                        boolean answer = GUIController.getInstance().showInvitation(gameInvitationMessage);
                         transport.sendMessage_CRYPTED(new GameInvitationAnswer(Account.getName(), answer), socket, Account.getPassword());
                         if (answer){
                             Account.setEnemyName(msg.getName());

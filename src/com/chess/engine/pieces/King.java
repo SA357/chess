@@ -84,11 +84,6 @@ public final class King extends Piece {
     }
 
     @Override
-    public int locationBonus() {
-        return this.pieceAlliance.kingBonus(this.piecePosition);
-    }
-
-    @Override
     public King movePiece(final Move move) {
         return new King(this.pieceAlliance, move.getDestinationCoordinate(), false, move.isCastlingMove(), false, false);
     }

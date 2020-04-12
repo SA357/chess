@@ -55,11 +55,6 @@ public final class Knight extends Piece {
     }
 
     @Override
-    public int locationBonus() {
-        return this.pieceAlliance.knightBonus(this.piecePosition);
-    }
-
-    @Override
     public Knight movePiece(final Move move) {
         return PieceUtils.INSTANCE.getMovedKnight(move.getMovedPiece().getPieceAllegiance(), move.getDestinationCoordinate());
     }

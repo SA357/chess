@@ -8,7 +8,6 @@ Thumbs.db
 Thumbs.db:encryptable
 ehthumbs.db
 ehthumbs_vista.db
-DB.db
 
 # Dump file
 *.stackdump
@@ -29,4 +28,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# End of https://www.gitignore.io/api/windows
+DB.db

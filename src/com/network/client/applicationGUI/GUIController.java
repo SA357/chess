@@ -181,12 +181,12 @@ public class GUIController {
                             alert.setHeaderText(null);
                             alert.setContentText("ПОЛЬЗОВАТЕЛЬ ПРИНЯЛ ПРЕДЛОЖЕНИЕ");
                             alert.showAndWait();
-                            try {
-                                Thread.sleep(3500);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                            alert.close();
+//                            try {
+//                                Thread.sleep(3500);
+//                            } catch (InterruptedException e) {
+//                                e.printStackTrace();
+//                            }
+                            //alert.close();
                         });
                         GameUtils.setIsPlayerTurn(true);
                         BlackWidow.main(new String[]{});
@@ -292,10 +292,12 @@ public class GUIController {
             alert.setHeaderText(null);
             alert.setContentText(msg.getEnemyName() + " приглашает вас сыграть партеечку");
             Optional<ButtonType> result = alert.showAndWait();
-            if(result.get() == ButtonType.YES){
+            if(result.get() == ButtonType.OK){
                 answer.set(true);
             }
+            lock.lock();
             condition.signal();
+            lock.unlock();
         });
         try {
             condition.await();
@@ -305,57 +307,59 @@ public class GUIController {
         lock.unlock();
         return answer.get();
     }
-//    public class MyAlert extends Application implements Runnable{
-//        Message msg;
-//
-//        public MyAlert(Message msg) {
-//            this.msg = msg;
-//        }
-//
-//        public void show(){
-//            Stage stage = new Stage();
-//            stage.setTitle("ПРИШЛАШЕНИЕ");
-//            stage.setResizable(false);
-//            stage.initModality(Modality.APPLICATION_MODAL);
-//            stage.setOnCloseRequest(event->{
-//                answer[0] = false;
-//                Platform.exit();
-//            });
-//
-//            Button yes = new Button("yes");
-//            yes.setOnAction(e -> {
-//                answer[0] = true;
-//                Platform.exit();
-//            });
-//
-//            Button no = new Button("no");
-//            yes.setOnAction(e -> {
-//                answer[0] = false;
-//                Platform.exit();
-//            });
-//
-//            Label label = new Label(msg.getName() + " приглашает вас сыграть партеечку");
-//            VBox vBox = new VBox(6);
-//            vBox.getChildren().add(label);
-//            HBox hBox = new HBox(12);
-//            hBox.getChildren().addAll(no, yes);
-//            vBox.getChildren().add(hBox);
-//            //vBox.setAlignment(Pos.CENTER);
-//            Scene scene = new Scene(vBox);
-//            stage.setScene(scene);
-//            stage.showAndWait();
-//        }
-//
-//        @Override
-//        public void run() {
-//
-//        }
-//
-//        @Override
-//        public void start(Stage primaryStage) throws Exception {
-//            show();
-//        }
-//    }
+/*
+    public class MyAlert extends Application implements Runnable{
+        Message msg;
+
+        public MyAlert(Message msg) {
+            this.msg = msg;
+        }
+
+        public void show(){
+            Stage stage = new Stage();
+            stage.setTitle("ПРИШЛАШЕНИЕ");
+            stage.setResizable(false);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setOnCloseRequest(event->{
+                answer[0] = false;
+                Platform.exit();
+            });
+
+            Button yes = new Button("yes");
+            yes.setOnAction(e -> {
+                answer[0] = true;
+                Platform.exit();
+            });
+
+            Button no = new Button("no");
+            yes.setOnAction(e -> {
+                answer[0] = false;
+                Platform.exit();
+            });
+
+            Label label = new Label(msg.getName() + " приглашает вас сыграть партеечку");
+            VBox vBox = new VBox(6);
+            vBox.getChildren().add(label);
+            HBox hBox = new HBox(12);
+            hBox.getChildren().addAll(no, yes);
+            vBox.getChildren().add(hBox);
+            //vBox.setAlignment(Pos.CENTER);
+            Scene scene = new Scene(vBox);
+            stage.setScene(scene);
+            stage.showAndWait();
+        }
+
+        @Override
+        public void run() {
+
+        }
+
+        @Override
+        public void start(Stage primaryStage) throws Exception {
+            show();
+        }
+    }
+*/
 
     public void addActiveClient(String name) {
         Platform.runLater(() -> activeUsers.appendText(name + "\n"));

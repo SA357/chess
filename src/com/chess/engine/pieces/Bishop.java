@@ -58,11 +58,6 @@ public final class Bishop extends Piece {
     }
 
     @Override
-    public int locationBonus() {
-        return this.pieceAlliance.bishopBonus(this.piecePosition);
-    }
-
-    @Override
     public Bishop movePiece(final Move move) {
         return PieceUtils.INSTANCE.getMovedBishop(move.getMovedPiece().getPieceAllegiance(), move.getDestinationCoordinate());
     }

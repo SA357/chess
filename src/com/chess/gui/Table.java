@@ -33,7 +33,6 @@ public final class Table extends Observable {
     private final JFrame gameFrame;
     private final GameHistoryPanel gameHistoryPanel;
     private final TakenPiecesPanel takenPiecesPanel;
-    private final DebugPanel debugPanel;
     private final BoardPanel boardPanel;
     private MoveLog moveLog;
     private Board chessBoard;
@@ -45,7 +44,7 @@ public final class Table extends Observable {
     private Color lightTileColor = Color.decode("#FFFACD");
     private Color darkTileColor = Color.decode("#593E1A");
 
-    private static final Dimension OUTER_FRAME_DIMENSION = new Dimension(600, 600);
+    private static final Dimension OUTER_FRAME_DIMENSION = new Dimension(600, 500);
     private static final Dimension BOARD_PANEL_DIMENSION = new Dimension(400, 350);
     private static final Dimension TILE_PANEL_DIMENSION = new Dimension(10, 10);
 
@@ -62,7 +61,6 @@ public final class Table extends Observable {
         this.highlightLegalMoves = false;
         this.pieceIconPath = "art/holywarriors/";
         this.gameHistoryPanel = new GameHistoryPanel();
-        this.debugPanel = new DebugPanel();
         this.takenPiecesPanel = new TakenPiecesPanel();
         this.boardPanel = new BoardPanel();
         this.moveLog = new MoveLog();
@@ -79,7 +77,6 @@ public final class Table extends Observable {
         this.gameFrame.add(this.takenPiecesPanel, BorderLayout.WEST);
         this.gameFrame.add(this.boardPanel, BorderLayout.CENTER);
         this.gameFrame.add(this.gameHistoryPanel, BorderLayout.EAST);
-        this.gameFrame.add(debugPanel, BorderLayout.SOUTH);
         setDefaultLookAndFeelDecorated(true);
         this.gameFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.gameFrame.setSize(OUTER_FRAME_DIMENSION);
@@ -119,10 +116,6 @@ public final class Table extends Observable {
         return this.takenPiecesPanel;
     }
 
-    private DebugPanel getDebugPanel() {
-        return this.debugPanel;
-    }
-
     private boolean getHighlightLegalMoves() {
         return this.highlightLegalMoves;
     }
@@ -132,7 +125,6 @@ public final class Table extends Observable {
         Table.get().getGameHistoryPanel().redo(chessBoard, Table.get().getMoveLog());
         Table.get().getTakenPiecesPanel().redo(Table.get().getMoveLog());
         Table.get().getBoardPanel().drawBoard(Table.get().getGameBoard());
-        Table.get().getDebugPanel().redo();
     }
 
     private void populateMenuBar(final JMenuBar tableMenuBar) {
@@ -425,7 +417,7 @@ public final class Table extends Observable {
                                 final MoveTransition transition = chessBoard.currentPlayer().makeMove(move);
                                 if (transition.getMoveStatus().isDone()) {
                                     chessBoard = transition.getToBoard();
-                                    moveLog.addMove(move);///почему он вообще видит, что он существет//TODO
+                                    moveLog.addMove(move);
                                     /////
                                     new Transport()
                                             .sendMessage_CRYPTED(new MoveMessage(Account.getName(), chessBoard, moveLog),
@@ -537,7 +529,6 @@ public final class Table extends Observable {
             gameHistoryPanel.redo(chessBoard, moveLog);
             takenPiecesPanel.redo(moveLog);
             Table.get().getBoardPanel().drawBoard(chessBoard);////////
-            debugPanel.redo();
         });
     }
 }
