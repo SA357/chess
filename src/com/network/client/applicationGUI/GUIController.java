@@ -174,22 +174,22 @@ public class GUIController {
                         return;
                     }
                     if (answer.getAnswer()) {
-                        Platform.runLater(() -> {
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setOnCloseRequest(e->Platform.exit());//////////////
-                            alert.setTitle("готовьтесь к игре");
-                            alert.setHeaderText(null);
-                            alert.setContentText("ПОЛЬЗОВАТЕЛЬ ПРИНЯЛ ПРЕДЛОЖЕНИЕ");
-                            alert.showAndWait();
-//                            try {
-//                                Thread.sleep(3500);
-//                            } catch (InterruptedException e) {
-//                                e.printStackTrace();
-//                            }
-                            //alert.close();
-                        });
+//                        Platform.runLater(() -> {
+//                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+//                            alert.setOnCloseRequest(e->Platform.exit());//////////////
+//                            alert.setTitle("готовьтесь к игре");
+//                            alert.setHeaderText(null);
+//                            alert.setContentText("ПОЛЬЗОВАТЕЛЬ ПРИНЯЛ ПРЕДЛОЖЕНИЕ");
+//                            alert.showAndWait();
+////                            try {
+////                                Thread.sleep(3500);
+////                            } catch (InterruptedException e) {
+////                                e.printStackTrace();
+////                            }
+//                            //alert.close();
+//                        });
                         GameUtils.setIsPlayerTurn(true);
-                        BlackWidow.main(new String[]{});
+                        new Thread(()->BlackWidow.main(new String[]{})).start();
                         return;
                     }
                 } catch (Exception e) {

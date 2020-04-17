@@ -99,7 +99,7 @@ public class ClientServerPart implements Runnable {
                         transport.sendMessage_CRYPTED(new GameInvitationAnswer(Account.getName(), answer), socket, Account.getPassword());
                         if (answer){
                             Account.setEnemyName(msg.getName());
-                            BlackWidow.main(new String[]{});
+                            new Thread(()->BlackWidow.main(new String[]{})).start();
                         }
                         break;
                     case moveMessageCode:
