@@ -139,8 +139,8 @@ public class Server implements Runnable {
                 transport.sendMessage_NOT_CRYPTED(new RegistrationReplyMessage(false), socket);
             } else {
                 db.addClient(msg.getName(), msg.getPassword(), Date.valueOf(LocalDate.now()), false);
-                System.out.println(msg.getName() + " зарегестрировался");
-                ServerController.getInstance().log(msg.getName() + " зарегестрировался");
+                System.out.println(msg.getName() + " зарегистрировался");
+                ServerController.getInstance().log(msg.getName() + " зарегистрировался");
                 transport.sendMessage_NOT_CRYPTED(new RegistrationReplyMessage(true), socket);
             }
         }

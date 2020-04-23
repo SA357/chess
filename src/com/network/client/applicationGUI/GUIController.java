@@ -182,7 +182,7 @@ public class GUIController {
 //                            alert.setContentText("ПОЛЬЗОВАТЕЛЬ ПРИНЯЛ ПРЕДЛОЖЕНИЕ");
 //                            alert.showAndWait();
 ////                            try {
-////                                Thread.sleep(3500);
+////                                Thread.sleep(2500);
 ////                            } catch (InterruptedException e) {
 ////                                e.printStackTrace();
 ////                            }
