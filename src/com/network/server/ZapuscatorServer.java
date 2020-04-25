@@ -45,7 +45,7 @@ public class ZapuscatorServer extends Application {
             catch (SQLException e) {
                 e.printStackTrace();
             }
-            System.out.println("Сервер пошол спать");
+            System.out.println("Сервер пошёл спать");
             Platform.exit();
         });
         ServerController.getInstance().log("ПРИ ВЫКЛЮЧЕНИИ ПРИЛОЖЕНИЯ  СЕРВЕР ОТКЛЮЧИТСЯ !");
