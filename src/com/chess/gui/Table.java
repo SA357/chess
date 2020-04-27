@@ -146,15 +146,6 @@ public final class Table extends Observable {
         final JMenu optionsMenu = new JMenu("Options");
         optionsMenu.setMnemonic(KeyEvent.VK_O);
 
-        final JMenuItem escapeAnalysis = new JMenuItem("Escape Analysis Score", KeyEvent.VK_S);
-        escapeAnalysis.addActionListener(e -> {
-            final Move lastMove = moveLog.getMoves().get(moveLog.size() - 1);
-            if(lastMove != null) {
-                System.out.println(MoveUtils.exchangeScore(lastMove));
-            }
-        });
-        optionsMenu.add(escapeAnalysis);
-
         final JMenuItem legalMovesMenuItem = new JMenuItem("Current State", KeyEvent.VK_L);
         legalMovesMenuItem.addActionListener(e -> {
             System.out.println(chessBoard.getWhitePieces());
@@ -179,10 +170,6 @@ public final class Table extends Observable {
 
         final JMenuItem chooseLightMenuItem = new JMenuItem("Choose Light Tile Color");
         colorChooserSubMenu.add(chooseLightMenuItem);
-
-        final JMenuItem chooseLegalHighlightMenuItem = new JMenuItem(
-                "Choose Legal Move Highlight Color");
-        colorChooserSubMenu.add(chooseLegalHighlightMenuItem);
 
         preferencesMenu.add(colorChooserSubMenu);
 
@@ -222,7 +209,6 @@ public final class Table extends Observable {
             Table.get().getBoardPanel().drawBoard(chessBoard);
         });
 
-
         abstractMenMenuItem.addActionListener(e -> {
             pieceIconPath = "art/simple/";
             Table.get().getBoardPanel().drawBoard(chessBoard);
@@ -239,11 +225,6 @@ public final class Table extends Observable {
         });
 
         preferencesMenu.add(chessMenChoiceSubMenu);
-
-        chooseLegalHighlightMenuItem.addActionListener(e -> {
-            System.out.println("implement me");
-            Table.get().getGameFrame().repaint();
-        });
 
         final JMenuItem flipBoardMenuItem = new JMenuItem("Flip board");
 
