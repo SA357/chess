@@ -81,7 +81,7 @@ public class RegistrationController {
                     Platform.runLater(() -> {
                         alert.setTitle("ПОЗРАВЛЯЕМ");
                         alert.setHeaderText(null);
-                        alert.setContentText("ВЫ ЗАРЕГЕЦТРИРОВАНЫ");
+                        alert.setContentText("ВЫ ЗАРЕГИСТРИРОВАНЫ");
                         alert.showAndWait();
                         nameField.setText(name);
                         passwordField.setText(password);
