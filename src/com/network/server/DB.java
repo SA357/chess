@@ -179,7 +179,6 @@ class DB {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT EXISTS(SELECT password FROM Clients WHERE password = '"
                     + password + "' and name = '" + name + "' and isAdmin =" + true + ")");
-            //rs.next(); //????
             return rs.getBoolean(1);
         }
     }

@@ -12,12 +12,12 @@ import static com.network.message.Message.*;
 
 
 public class RegistrationController {
+    private static Transport transport = new Transport();
+    private static RegistrationController instance;
     @FXML private PasswordField passwordField;
     @FXML private TextField regestrationPassword;
     @FXML private TextField nameField;
     @FXML private TextField regestrationName;
-    private static Transport transport=new Transport();
-    private static RegistrationController instance;
 
     public static RegistrationController getInstance() {
         return instance;
@@ -27,30 +27,29 @@ public class RegistrationController {
         RegistrationController.instance = instance;
     }
 
-    @FXML private void OKEnter() {
-       String password=passwordField.getText();
-       String name=nameField.getText();
-        new Thread( () -> {
+    @FXML
+    private void OKEnter() {
+        String password = passwordField.getText();
+        String name = nameField.getText();
+        new Thread(() -> {
             try {
                 GreetingReplyMessage check = (GreetingReplyMessage) transport.sendAndRecieve_NOT_CRYPTED(
                         new GreetingMessage(name, Account.getClientServerPartPort(), password), ClientApp.getServerAddress());
                 if (check.isVerified()) {
-                     Account.setName(name);
-                     Account.setPassword(password);
-                     Account.setAdmin(check.isAdmin());
+                    Account.setName(name);
+                    Account.setPassword(password);
+                    Account.setAdmin(check.isAdmin());
                     if (check.isAdmin()) {
                         Platform.runLater(() -> {
                             Registration.getStage().close();
                             GUIController.getInstance().setAdmin();
                             GUI.getStage().show();
                         });
-                    }
-                    else {
+                    } else {
                         Platform.runLater(() -> {
                             Registration.getStage().close(); //hide();
                             GUIController.getInstance().setUser();
                             GUI.getStage().show();
-                            //GUIController.getInstance().reload();//////////////////////
                         });
                     }
                 } else {
@@ -63,18 +62,18 @@ public class RegistrationController {
                         alert.showAndWait();
                     });
                 }
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }).start();
     }
 
-    @FXML private void OKReg() {
-        String password=regestrationPassword.getText();
-        String name=regestrationName.getText();
+    @FXML
+    private void OKReg() {
+        String password = regestrationPassword.getText();
+        String name = regestrationName.getText();
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        new Thread( () -> {
+        new Thread(() -> {
             try {
                 RegistrationReplyMessage check = (RegistrationReplyMessage) transport.sendAndRecieve_NOT_CRYPTED(
                         new RegistrationMessage(name, password), ClientApp.getServerAddress());
@@ -82,15 +81,14 @@ public class RegistrationController {
                     Platform.runLater(() -> {
                         alert.setTitle("ПОЗРАВЛЯЕМ");
                         alert.setHeaderText(null);
-                        alert.setContentText("ВЫ ЦАРЕГЕЦТРИРОВАНЫ");
+                        alert.setContentText("ВЫ ЗАРЕГЕЦТРИРОВАНЫ");
                         alert.showAndWait();
                         nameField.setText(name);
                         passwordField.setText(password);
                         regestrationName.setText("");
                         regestrationPassword.setText("");
                     });
-                }
-                else {
+                } else {
                     Platform.runLater(() -> {
                         alert.setTitle("ОЙ-ой-ОЙ");
                         alert.setHeaderText(null);

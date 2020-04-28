@@ -141,23 +141,6 @@ public final class Table extends Observable {
         frame.setLocation(x, y);
     }
 
-    private JMenu createOptionsMenu() {
-
-        final JMenu optionsMenu = new JMenu("Options");
-        optionsMenu.setMnemonic(KeyEvent.VK_O);
-
-        final JMenuItem legalMovesMenuItem = new JMenuItem("Current State", KeyEvent.VK_L);
-        legalMovesMenuItem.addActionListener(e -> {
-            System.out.println(chessBoard.getWhitePieces());
-            System.out.println(chessBoard.getBlackPieces());
-            System.out.println(playerInfo(chessBoard.currentPlayer()));
-            System.out.println(playerInfo(chessBoard.currentPlayer().getOpponent()));
-        });
-        optionsMenu.add(legalMovesMenuItem);
-
-        return optionsMenu;
-    }
-
     private JMenu createPreferencesMenu() {
 
         final JMenu preferencesMenu = new JMenu("Preferences");
@@ -243,12 +226,6 @@ public final class Table extends Observable {
         cbLegalMoveHighlighter.addActionListener(e -> highlightLegalMoves = cbLegalMoveHighlighter.isSelected());
         preferencesMenu.add(cbLegalMoveHighlighter);
         return preferencesMenu;
-    }
-
-    private static String playerInfo(final Player player) {
-        return ("Player is: " +player.getAlliance() + "\nlegal moves (" +player.getLegalMoves().size()+ ") = " +player.getLegalMoves() + "\ninCheck = " +
-                player.isInCheck() + "\nisInCheckMate = " +player.isInCheckMate() +
-                "\nisCastled = " +player.isCastled())+ "\n";
     }
 
     public void updateGameBoard(final Board board) { //турутуртрууу

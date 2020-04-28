@@ -20,7 +20,7 @@ public class ServerController {
     @FXML private TextField newServerAddress;
     private Transport transport = new Transport();
     private DB db = new DB();
-    private static ServerController instance;//например для того чтобы вывести соообщение в чатек
+    private static ServerController instance;
 
     public static ServerController getInstance() {
         return instance;
