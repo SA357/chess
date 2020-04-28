@@ -15,9 +15,9 @@ public class RegistrationController {
     private static Transport transport = new Transport();
     private static RegistrationController instance;
     @FXML private PasswordField passwordField;
-    @FXML private TextField regestrationPassword;
+    @FXML private TextField registrationPassword;
     @FXML private TextField nameField;
-    @FXML private TextField regestrationName;
+    @FXML private TextField registrationName;
 
     public static RegistrationController getInstance() {
         return instance;
@@ -70,8 +70,8 @@ public class RegistrationController {
 
     @FXML
     private void OKReg() {
-        String password = regestrationPassword.getText();
-        String name = regestrationName.getText();
+        String password = registrationPassword.getText();
+        String name = registrationName.getText();
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         new Thread(() -> {
             try {
@@ -85,8 +85,8 @@ public class RegistrationController {
                         alert.showAndWait();
                         nameField.setText(name);
                         passwordField.setText(password);
-                        regestrationName.setText("");
-                        regestrationPassword.setText("");
+                        registrationName.setText("");
+                        registrationPassword.setText("");
                     });
                 } else {
                     Platform.runLater(() -> {
@@ -94,8 +94,8 @@ public class RegistrationController {
                         alert.setHeaderText(null);
                         alert.setContentText("скорее всего имя уже занято");
                         alert.showAndWait();
-                        regestrationName.setText("");
-                        regestrationPassword.setText("");
+                        registrationName.setText("");
+                        registrationPassword.setText("");
                     });
                 }
             } catch (Exception e) {

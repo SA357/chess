@@ -29,8 +29,8 @@
          <content>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="3.0">
                <children>
-                  <TextField fx:id="regestrationName" maxWidth="-Infinity" onAction="#OKReg" promptText="Имя" />
-                  <TextField fx:id="regestrationPassword" maxWidth="-Infinity" onAction="#OKReg" promptText="Пароль" />
+                  <TextField fx:id="registrationName" maxWidth="-Infinity" onAction="#OKReg" promptText="Имя" />
+                  <TextField fx:id="registrationPassword" maxWidth="-Infinity" onAction="#OKReg" promptText="Пароль" />
                   <Button fx:id="OKReg" mnemonicParsing="false" onAction="#OKReg" style="-fx-background-color: D8BFD8; -fx-background-radius: 6;" text="ОК" />
                </children>
             </VBox>
