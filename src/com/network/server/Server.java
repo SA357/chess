@@ -229,7 +229,7 @@ public class Server implements Runnable {
                     GameInvitationAnswer gameInvitationAnswer;
                     if(
                         (gameInvitationAnswer =
-                                (GameInvitationAnswer) transport.sendAndRecieve_CRYPTED(
+                                (GameInvitationAnswer) transport.sendAndReceive_CRYPTED(
                                     msg, db.getInetSocketAddress(msg.getEnemyName()), db.getPassword(msg.getEnemyName()),true
                                 )
                         ).getAnswer()

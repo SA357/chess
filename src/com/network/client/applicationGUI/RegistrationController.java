@@ -33,7 +33,7 @@ public class RegistrationController {
         String name = nameField.getText();
         new Thread(() -> {
             try {
-                GreetingReplyMessage check = (GreetingReplyMessage) transport.sendAndRecieve_NOT_CRYPTED(
+                GreetingReplyMessage check = (GreetingReplyMessage) transport.sendAndReceive_NOT_CRYPTED(
                         new GreetingMessage(name, Account.getClientServerPartPort(), password), ClientApp.getServerAddress());
                 if (check.isVerified()) {
                     Account.setName(name);
@@ -75,7 +75,7 @@ public class RegistrationController {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         new Thread(() -> {
             try {
-                RegistrationReplyMessage check = (RegistrationReplyMessage) transport.sendAndRecieve_NOT_CRYPTED(
+                RegistrationReplyMessage check = (RegistrationReplyMessage) transport.sendAndReceive_NOT_CRYPTED(
                         new RegistrationMessage(name, password), ClientApp.getServerAddress());
                 if (check.isRegistrated()) {
                     Platform.runLater(() -> {

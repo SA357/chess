@@ -149,7 +149,7 @@ public class GUIController {
         if(!enemyName.equals(Account.getName())) {
             new Thread(() -> {
                 try {
-                    GameInvitationAnswer answer = (GameInvitationAnswer) transport.sendAndRecieve_CRYPTED(
+                    GameInvitationAnswer answer = (GameInvitationAnswer) transport.sendAndReceive_CRYPTED(
                             new GameInvitationMessage(Account.getName(), enemyName),
                             ClientApp.getServerAddress(), Account.getPassword(), true
                     );
@@ -221,7 +221,7 @@ public class GUIController {
         int port2 = newPort.getText().equals("") ? Account.getClientServerPartPort() : Integer.parseInt(newPort.getText());
         new Thread(() -> {
             try {
-                SettingReplyMessage check = (SettingReplyMessage) transport.sendAndRecieve_CRYPTED(new SettingMessage(Account.getName(),
+                SettingReplyMessage check = (SettingReplyMessage) transport.sendAndReceive_CRYPTED(new SettingMessage(Account.getName(),
                         name2, password2, new InetSocketAddress("localhost", port2)), ClientApp.getServerAddress(), Account.getPassword());
                 if (check.isChanged()) {
                     Account.setName(name2);
@@ -260,7 +260,7 @@ public class GUIController {
         try {
             Date date2 = (date1 != null) ? Date.valueOf(date1) : null;
             AdminQueryReplyMessage replyMessage = (AdminQueryReplyMessage) transport
-                    .sendAndRecieve_CRYPTED(
+                    .sendAndReceive_CRYPTED(
                             new AdminQueryMessage(Account.getName(), name1, words1, date2), ClientApp.getServerAddress(), Account.getPassword());
 //            System.out.println(replyMessage.getList());
             Platform.runLater(() -> {

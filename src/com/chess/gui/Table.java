@@ -377,9 +377,13 @@ public final class Table extends Observable {
                                     chessBoard = transition.getToBoard();
                                     moveLog.addMove(move);
                                     /////
-                                    new Transport()
-                                            .sendMessage_CRYPTED(new MoveMessage(Account.getName(), chessBoard, moveLog),
-                                                    ClientApp.getServerAddress(), Account.getPassword());
+                                    try {
+                                        new Transport()
+                                                .sendMessage_CRYPTED(new MoveMessage(Account.getName(), chessBoard, moveLog),
+                                                        ClientApp.getServerAddress(), Account.getPassword());
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
                                     //invokeLater(new Runnable() {    //можно высветить label о ходе игрока и залокать управление //не обяз
                                     //////
                                     GameUtils.setIsPlayerTurn(false);

@@ -270,7 +270,7 @@ class DB {
             while (scan.hasNextLine()) {
                 String line;
                 do {
-                    line = scan.nextLine();                                                      //обязателен ли трим //// здеся он всё портит, не в коем цлучое низя
+                    line = scan.nextLine();
                     if (!line.contains("--")) stringBuilder.append(line);
                 }
                 while (!line.contains(";"));
@@ -340,7 +340,7 @@ class DB {
             DatabaseMetaData metaData = conn.getMetaData();
             ResultSet rs = metaData.getTables(null, null, "", null);
             while (rs.next()) {
-                tableNames.add(rs.getString("TABLE_NAME"));//(3) cтолбец (узнали из документациии)
+                tableNames.add(rs.getString("TABLE_NAME"));//(3) cтолбец (из документациии)
             }
         }
         return tableNames;

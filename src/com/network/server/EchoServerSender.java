@@ -75,7 +75,7 @@ public class EchoServerSender implements Runnable {
             try {
                 System.out.println(clientServerPartAddress + " ECHO");
                 ServerController.getInstance().logEcho(clientServerPartAddress + " ECHO");
-                Message msg = transport.sendAndRecieve_CRYPTED(
+                Message msg = transport.sendAndReceive_CRYPTED(
                         new EchoMessage(), clientServerPartAddress, db.getPassword(db.getName(clientServerPartAddress))
                 );
 
@@ -111,7 +111,7 @@ public class EchoServerSender implements Runnable {
                     for (InetSocketAddress addr : list) {
                         try {
                             transport.sendMessage_CRYPTED(new DeleteClientMessage(name), addr, db.getPassword(db.getName(addr)));
-                        } catch (SQLException ex) {
+                        } catch (Exception ex) {
                             ex.printStackTrace();
                         }
                     }

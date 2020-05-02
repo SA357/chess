@@ -54,10 +54,10 @@ public class ServerController {
                             transport.sendMessage_CRYPTED(message, addr, db.getPassword(db.getName(addr)));
                         }
                         log("Сервер поменял адрес на " + a);
-                    } catch (SQLException | InterruptedException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    newServerAddress.setText("");
+            newServerAddress.setText("");
                     newServerPort.setText("");
                 }
         );
