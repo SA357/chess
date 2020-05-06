@@ -30,3 +30,6 @@ $RECYCLE.BIN/
 
 DB.db
 /DB.db
+/.idea/sonarlint/issuestore/
+/out/
+/CHESS.jar

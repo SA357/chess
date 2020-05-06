@@ -184,18 +184,18 @@ public class Server implements Runnable {
 
         private void handle(SettingMessage msg) throws Exception {
             if (db.checkClientNameExistence(msg.getName())) {   //проверяем есть ли в базе
+                String oldPassword = db.getPassword(msg.getName());
                 DeleteMeMessage deleteMeMessage = new DeleteMeMessage(db.getInetSocketAddress(msg.getName()), msg.getName());
                 db.settingUpdate(msg);
                 System.out.println(msg.getName() + " изменил имя на >>>" + msg.getNewName());
                 ServerController.getInstance().log(msg.getName() + " изменил имя на >>>" + msg.getNewName());
                 db.addActiveClient(msg.getNewName(), msg.getInetSocketAddress().getAddress().toString().split("/")[1],
-                        msg.getInetSocketAddress().getPort(), Date.valueOf(LocalDate.now()));
-                transport.sendMessage_CRYPTED(new SettingReplyMessage(true), socket, db.getPassword(msg.getName()));
-                handle(deleteMeMessage);//
+                                   msg.getInetSocketAddress().getPort(), Date.valueOf(LocalDate.now()));
+                transport.sendMessage_CRYPTED(new SettingReplyMessage(true), socket, oldPassword);
+                handle(deleteMeMessage);
                 for (InetSocketAddress addr : db.getAllActiveClientsServerParts()) {
                     transport.sendMessage_CRYPTED(new AddedClientMessage(msg.getNewName()), addr, db.getPassword(db.getName(addr)));
                 }
-                //
             }
         }
 
@@ -211,7 +211,7 @@ public class Server implements Runnable {
                 transport.sendMessage_CRYPTED(new DeleteClientMessage(msg.getName()), addr, db.getPassword(db.getName(addr)));
             }
             System.out.println(msg.getName() + " ушёл, и сюрвер его удалил " + msg.getInetSocketAddress());
-            ServerController.getInstance().log(msg.getName() + " ушёл, и сюрвер его удалил " + msg.getInetSocketAddress());
+            ServerController.getInstance().log(msg.getName() + " ушёл, и сервер его удалил " + msg.getInetSocketAddress());
             handle(new TextMessage(msg.getName() + " ушёл", "СЕРВЕР"));
         }
 
