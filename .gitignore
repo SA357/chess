@@ -33,3 +33,6 @@ DB.db
 /.idea/sonarlint/issuestore/
 /out/
 /CHESS.jar
+/.idea/
+/CHESS.bat
+/src/META-INF/MANIFEST.MF
