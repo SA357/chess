@@ -90,11 +90,11 @@ public class GUIController {
         GUI.getStage().getScene().getStylesheets().add("standart_Style.css");
     }
 
-    @FXML private void DNR_Style() {
+    @FXML private void R_Style() {
         mediaPlayer.stop();
-        mediaPlayer = turnMusic(DNRMusic);
+        mediaPlayer = turnMusic(RMusic);
         GUI.getStage().getScene().getStylesheets().clear();
-        GUI.getStage().getScene().getStylesheets().add("DNR_Style.css");
+        GUI.getStage().getScene().getStylesheets().add("R_Style.css");
     }
 
     @FXML private void mute() {
@@ -237,7 +237,7 @@ public class GUIController {
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setTitle("ОЙ-ой-ОЙ");
                         alert.setHeaderText(null);
-                        alert.setContentText("Не получелося, воть так воть(((");
+                        alert.setContentText("Не получилося, воть так воть(((");
                         alert.showAndWait();
                     });
                 }
@@ -279,7 +279,6 @@ public class GUIController {
         Platform.runLater(() -> textArea.appendText(line + "\n"));
     }
 
-    //final boolean[] answer = new boolean[1];
     public boolean showInvitation(GameInvitationMessage msg) {
         Lock lock = new ReentrantLock();
         lock.lock();
@@ -306,59 +305,6 @@ public class GUIController {
         lock.unlock();
         return answer.get();
     }
-/*
-    public class MyAlert extends Application implements Runnable{
-        Message msg;
-
-        public MyAlert(Message msg) {
-            this.msg = msg;
-        }
-
-        public void show(){
-            Stage stage = new Stage();
-            stage.setTitle("ПРИШЛАШЕНИЕ");
-            stage.setResizable(false);
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setOnCloseRequest(event->{
-                answer[0] = false;
-                Platform.exit();
-            });
-
-            Button yes = new Button("yes");
-            yes.setOnAction(e -> {
-                answer[0] = true;
-                Platform.exit();
-            });
-
-            Button no = new Button("no");
-            yes.setOnAction(e -> {
-                answer[0] = false;
-                Platform.exit();
-            });
-
-            Label label = new Label(msg.getName() + " приглашает вас сыграть партеечку");
-            VBox vBox = new VBox(6);
-            vBox.getChildren().add(label);
-            HBox hBox = new HBox(12);
-            hBox.getChildren().addAll(no, yes);
-            vBox.getChildren().add(hBox);
-            //vBox.setAlignment(Pos.CENTER);
-            Scene scene = new Scene(vBox);
-            stage.setScene(scene);
-            stage.showAndWait();
-        }
-
-        @Override
-        public void run() {
-
-        }
-
-        @Override
-        public void start(Stage primaryStage) throws Exception {
-            show();
-        }
-    }
-*/
 
     public void addActiveClient(String name) {
         Platform.runLater(() -> activeUsers.appendText(name + "\n"));

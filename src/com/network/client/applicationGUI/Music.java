@@ -7,7 +7,7 @@ import javafx.util.Duration;
 import java.io.File;
 
 public class Music {
-    public static Media DNRMusic = new Media(new File("music\\Служить России.mp3").toURI().toString());
+    public static Media RMusic = new Media(new File("music\\Служить России.mp3").toURI().toString());
     public static Media standard = new Media(new File("music\\Stalingrad, Massengrab - Alle sieben Sekunden stirbt ein deutscher Soldat.mp3").toURI().toString());
     public static Media admin = Math.random() * 100 < 68
             ? new Media(new File("music\\Narodowy.mp3").toURI().toString())

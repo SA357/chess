@@ -1,23 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<TabPane fx:id="tabPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.network.client.applicationGUI.GUIController">
+<TabPane fx:id="tabPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.network.client.applicationGUI.GUIController">
   <tabs>
       <Tab closable="false" text="Поиск игры">
          <content>
@@ -30,7 +19,7 @@
             </AnchorPane>
          </content>
       </Tab>
-    <Tab closable="false" text="Чатэк">
+    <Tab closable="false" text="Чат">
          <content>
             <BorderPane prefHeight="200.0" prefWidth="200.0">
                <center>
@@ -86,8 +75,8 @@
                                        <image>
                                           <Image url="@Novorossia.jpg" />
                                        </image></ImageView>
-                                    <TextField alignment="CENTER" text="DNR" />
-                                    <Button mnemonicParsing="false" onAction="#DNR_Style" text="выбрать" />
+                                    <TextField alignment="CENTER" editable="false" text="Rus" />
+                                    <Button mnemonicParsing="false" onAction="#R_Style" text="выбрать" />
                                  </children></VBox>
                            </children>
                         </HBox>
